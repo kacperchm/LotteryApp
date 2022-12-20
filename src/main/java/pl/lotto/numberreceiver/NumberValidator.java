@@ -1,26 +1,40 @@
 package pl.lotto.numberreceiver;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 class NumberValidator {
 
     public static final int LOWEST_POSSIBLE_NUMBER_FROM_USER = 1;
     public static final int HIGHEST_POSSIBLE_NUMBER_FROM_USER = 99;
 
+
+
     public ValidationResult validate(List<Integer> numbersFromUser) {
+        ArrayList<String> message = new ArrayList<>();
+        boolean valid = true;
         if (areAllNumbersInRange(numbersFromUser)) {
-            return new ValidationResult(false, "Number from outside the range");
+            valid = false;
+            message.add("Number from outside the range");
         }
         if (isMoreThanSixNumbers(numbersFromUser)) {
-            return new ValidationResult(false, "Number from outside the range");
+            valid = false;
+            message.add("You gave more than six numbers");
         }
         if (isLessThanSixNumbers(numbersFromUser)) {
-            return new ValidationResult(false, "Number from outside the range");
+            valid = false;
+            message.add("You gave less than six numbers");
         }
         if (hasDuplicate(numbersFromUser)) {
-            return new ValidationResult(false, "Number from outside the range");
+            valid = false;
+            message.add("Your numbers have duplicate");
         }
-        return new ValidationResult(true, "All went good");
+        if (message.isEmpty()) {
+            message.add("All went good");
+        }
+
+        return new ValidationResult(valid, message);
     }
 
     private boolean areAllNumbersInRange(List<Integer> numbersFromUser) {
@@ -41,13 +55,10 @@ class NumberValidator {
     }
 
     private boolean hasDuplicate(List<Integer> numbersFromUser) {
-        for (int i = 0; i < numbersFromUser.size(); i++) {
-            for (int j = i + 1; j < numbersFromUser.size(); j++) {
-                if ((numbersFromUser.get(i)).equals(numbersFromUser.get(j))) {
-                    return true;
-                }
+        List<Integer> listAfterDistinct = numbersFromUser.stream().distinct().collect(Collectors.toList());
+            if(listAfterDistinct.size() < 6 && numbersFromUser.size() == 6) {
+                return true;
             }
-        }
         return false;
     }
 }

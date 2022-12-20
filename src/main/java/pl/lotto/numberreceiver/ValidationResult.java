@@ -1,8 +1,10 @@
 package pl.lotto.numberreceiver;
 
+import java.util.ArrayList;
+
 record ValidationResult(
         boolean isValid,
-        String validationMessage
+        ArrayList validationMessage
 ) {
 
     public boolean isNotValid() {

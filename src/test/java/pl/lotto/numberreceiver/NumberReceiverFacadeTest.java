@@ -16,7 +16,7 @@ public class NumberReceiverFacadeTest {
         // then
         assertThat(result.drawDate()).isNotNull();
         assertThat(result.lotteryId()).isNotEqualTo(null);
-        assertThat(result.message()).isEqualTo("All went good");
+        assertThat(result.message().get(0)).isEqualTo("All went good");
     }
 
     @Test
@@ -29,7 +29,7 @@ public class NumberReceiverFacadeTest {
         // then
         assertThat(result.drawDate()).isNull();
         assertThat(result.lotteryId()).isNull();
-        assertThat(result.message()).isEqualTo("Number from outside the range");
+        assertThat(result.message().get(0)).isEqualTo("Number from outside the range");
     }
 
     @Test
@@ -42,7 +42,7 @@ public class NumberReceiverFacadeTest {
         // then
         assertThat(result.drawDate()).isNull();
         assertThat(result.lotteryId()).isNull();
-        assertThat(result.message()).isEqualTo("You gave less than six numbers");
+        assertThat(result.message().get(0)).isEqualTo("You gave less than six numbers");
     }
 
     @Test
@@ -55,7 +55,7 @@ public class NumberReceiverFacadeTest {
         // then
         assertThat(result.drawDate()).isNull();
         assertThat(result.lotteryId()).isNull();
-        assertThat(result.message()).isEqualTo("You gave more than six numbers");
+        assertThat(result.message().get(0)).isEqualTo("You gave more than six numbers");
     }
 
     @Test
@@ -68,7 +68,7 @@ public class NumberReceiverFacadeTest {
         // then
         assertThat(result.drawDate()).isNull();
         assertThat(result.lotteryId()).isNull();
-        assertThat(result.message()).isEqualTo("Your numbers have duplicate");
+        assertThat(result.message().get(0)).isEqualTo("Your numbers have duplicate");
     }
 
 
@@ -82,6 +82,7 @@ public class NumberReceiverFacadeTest {
         // then
         assertThat(result.drawDate()).isNull();
         assertThat(result.lotteryId()).isNull();
-        assertThat(result.message()).isEqualTo("Your numbers have duplicate");
+        assertThat(result.message().get(0)).isEqualTo("Number from outside the range");
+        assertThat(result.message().get(1)).isEqualTo("Your numbers have duplicate");
     }
 }
