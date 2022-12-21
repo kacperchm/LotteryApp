@@ -1,9 +1,12 @@
 package pl.lotto.numberreceiver;
 
+import java.time.Clock;
+
 public class NumberReceiverFacadeConfiguration {
 
-    NumberReceiverFacade createForTests() {
+    NumberReceiverFacade createForTests(Clock clock, NumberReceiverRepository repository) {
         NumberValidator numberValidator = new NumberValidator();
-        return new NumberReceiverFacade(numberValidator);
+        DrawDateGenerator generator = new DrawDateGenerator();
+        return new NumberReceiverFacade(numberValidator, clock, repository, generator);
     }
 }

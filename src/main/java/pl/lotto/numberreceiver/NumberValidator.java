@@ -2,7 +2,7 @@ package pl.lotto.numberreceiver;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
+import static pl.lotto.numberreceiver.ValidationError.OUT_OF_RANGE;
 
 class NumberValidator {
 
@@ -10,40 +10,34 @@ class NumberValidator {
     public static final int HIGHEST_POSSIBLE_NUMBER_FROM_USER = 99;
 
 
-
     public ValidationResult validate(List<Integer> numbersFromUser) {
-        ArrayList<String> message = new ArrayList<>();
-        boolean valid = true;
-        if (areAllNumbersInRange(numbersFromUser)) {
-            valid = false;
-            message.add("Number from outside the range");
+        List<String> message = new ArrayList<>();
+        if (isAnyNumberOfOutRange(numbersFromUser)) {
+            message.add(OUT_OF_RANGE.getMessage());
         }
         if (isMoreThanSixNumbers(numbersFromUser)) {
-            valid = false;
             message.add("You gave more than six numbers");
         }
         if (isLessThanSixNumbers(numbersFromUser)) {
-            valid = false;
             message.add("You gave less than six numbers");
         }
         if (hasDuplicate(numbersFromUser)) {
-            valid = false;
             message.add("Your numbers have duplicate");
         }
-        if (message.isEmpty()) {
+        boolean valid = message.isEmpty();
+        if (valid) {
             message.add("All went good");
         }
-
-        return new ValidationResult(valid, message);
+        String collect = String.join(",", message);
+        return new ValidationResult(valid, collect);
     }
 
-    private boolean areAllNumbersInRange(List<Integer> numbersFromUser) {
-        for (int i = 0; i < numbersFromUser.size(); i++) {
-            if (numbersFromUser.get(i) < LOWEST_POSSIBLE_NUMBER_FROM_USER || numbersFromUser.get(i) > HIGHEST_POSSIBLE_NUMBER_FROM_USER) {
-                return true;
-            }
-        }
-        return false;
+    private boolean isAnyNumberOfOutRange(List<Integer> numbersFromUser) {
+        return numbersFromUser.stream().anyMatch(this::isOutOfRange);
+    }
+
+    private boolean isOutOfRange(Integer number) {
+        return number < LOWEST_POSSIBLE_NUMBER_FROM_USER || number > HIGHEST_POSSIBLE_NUMBER_FROM_USER;
     }
 
     private boolean isMoreThanSixNumbers(List<Integer> numbersFromUser) {
@@ -55,10 +49,9 @@ class NumberValidator {
     }
 
     private boolean hasDuplicate(List<Integer> numbersFromUser) {
-        List<Integer> listAfterDistinct = numbersFromUser.stream().distinct().collect(Collectors.toList());
-            if(listAfterDistinct.size() < 6 && numbersFromUser.size() == 6) {
-                return true;
-            }
-        return false;
+        return numbersFromUser.stream()
+                .distinct()
+                .toList()
+                .size() != 6;
     }
 }
