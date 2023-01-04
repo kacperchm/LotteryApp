@@ -7,13 +7,13 @@ import java.util.List;
 public class NumberGenerator {
 
     List<Integer> generateNumber() {
-            if(dateChecker()) {
+            if(isDrawDateTime()) {
                return drawingMachine();
             }
-            return  null;
+            return  List.of();
     }
 
-    Boolean dateChecker() {
+    boolean isDrawDateTime() {
        LocalDateTime now = LocalDateTime.now();
         if(now.getDayOfWeek().equals("SATURDAY") && now.getHour() == 20
                 && now.getMinute() == 0 && now.getSecond()== 0 && now.getNano()==0) {
