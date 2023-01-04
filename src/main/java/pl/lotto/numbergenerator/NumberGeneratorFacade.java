@@ -1,9 +1,8 @@
 package pl.lotto.numbergenerator;
 
-import pl.lotto.numberreceiver.LotteryTicketDto;
+import pl.lotto.numberreceiver.dto.LotteryTicketDto;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class NumberGeneratorFacade {
 

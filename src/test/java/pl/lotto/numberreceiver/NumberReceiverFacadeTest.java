@@ -4,12 +4,14 @@ import java.time.Clock;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZoneOffset;
-import java.util.ArrayList;
 import java.util.List;
 import org.junit.jupiter.api.Test;
+import pl.lotto.numberreceiver.dto.LotteryTicketDto;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class NumberReceiverFacadeTest {
+
+    NumberReceiverRepository lotteryTicketDb = new InMemoryNumberReceiverRepository();
 
     @Test
     public void should_return_lottery_id_and_draw_date_when_user_gave_six_numbers_in_range_of_1_99() {
@@ -96,7 +98,7 @@ public class NumberReceiverFacadeTest {
     public void should_return_ticket_when_user_played() {
         // given
         LocalDateTime now = LocalDateTime.of(2022, 12, 28, 17, 9);
-        AdjustableClock clock = new AdjustableClock(now.toInstant(ZoneOffset.UTC),ZoneId.of("Europe/Warsaw"));
+        AdjustableClock clock = new AdjustableClock(now.toInstant(ZoneOffset.UTC), ZoneId.of("Europe/Warsaw"));
         NumberReceiverRepository repository = new InMemoryNumberReceiverRepository();
         NumberReceiverFacade numberReceiverFacade = new NumberReceiverFacadeConfiguration().createForTests(clock, repository);
         List<Integer> numbersFromUser1 = List.of(1, 2, 3, 4, 5, 6);
