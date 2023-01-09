@@ -30,7 +30,7 @@ public class NumberReceiverFacade {
         String generatedId = UUID.randomUUID().toString();
         LocalDateTime dateOfCreationTicket = LocalDateTime.now(clock);
         LocalDateTime drawDate = drawDateGenerator.findFirstSaturday(dateOfCreationTicket);
-        LotteryTicket save = repository.save(new LotteryTicket(generatedId,
+        LotteryTicket savedLotteryTicket = repository.save(new LotteryTicket(generatedId,
                 numbersFromUser,
                 dateOfCreationTicket,
                 drawDate));

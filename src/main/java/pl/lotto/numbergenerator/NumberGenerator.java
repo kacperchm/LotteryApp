@@ -1,24 +1,24 @@
 package pl.lotto.numbergenerator;
 
+import java.time.DayOfWeek;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
 public class NumberGenerator {
 
-    List<Integer> generateNumber() {
-            if(isDrawDateTime()) {
+    List<Integer> generateNumber(LocalDateTime date) {
+            if(isDrawDateTime(date)) {
                return drawingMachine();
             }
             return  List.of();
     }
 
-    boolean isDrawDateTime() {
-       LocalDateTime now = LocalDateTime.now();
-        if(now.getDayOfWeek().equals("SATURDAY") && now.getHour() == 20
-                && now.getMinute() == 0 && now.getSecond()== 0 && now.getNano()==0) {
+    boolean isDrawDateTime(LocalDateTime date) {
+        if(date.getDayOfWeek().equals(DayOfWeek.SATURDAY) && date.getHour() == 20 && date.getMinute() == 0) {
             return true;
         }
+
         return false;
     }
 
