@@ -31,7 +31,7 @@ public class NumberGeneratorFacade {
         return new DrawnNumbersDto(1L, dateTime,drawNumbers);
     }
 
-    public DrawnNumbers retrieveWonNumbers(LocalDateTime dateTime) {
-        return repository.findDrawnNumbersByDrawDate(dateTime);
+    public DrawnNumbersDto retrieveWonNumbers(LocalDateTime dateTime) {
+        return DrawnNumbersMapper.mapToLotteryTicketDto(repository.findDrawnNumbersByDrawDate(dateTime));
     }
 }

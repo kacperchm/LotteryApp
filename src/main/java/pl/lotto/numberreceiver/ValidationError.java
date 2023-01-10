@@ -3,7 +3,9 @@ package pl.lotto.numberreceiver;
 enum ValidationError {
 
     NUMBER_DUPLICATED("Your numbers have duplicate"),
-    OUT_OF_RANGE("Number from outside the range");
+    OUT_OF_RANGE("Number from outside the range"),
+    MORE_NUMBERS("You gave more than six numbers"),
+    LESS_NUMBERS("You gave less than six numbers");
 
     private final String message;
 

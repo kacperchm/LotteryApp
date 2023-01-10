@@ -2,7 +2,8 @@ package pl.lotto.numberreceiver;
 
 import java.util.ArrayList;
 import java.util.List;
-import static pl.lotto.numberreceiver.ValidationError.OUT_OF_RANGE;
+
+import static pl.lotto.numberreceiver.ValidationError.*;
 
 class NumberValidator {
 
@@ -16,13 +17,13 @@ class NumberValidator {
             message.add(OUT_OF_RANGE.getMessage());
         }
         if (isMoreThanSixNumbers(numbersFromUser)) {
-            message.add("You gave more than six numbers");
+            message.add(MORE_NUMBERS.getMessage());
         }
         if (isLessThanSixNumbers(numbersFromUser)) {
-            message.add("You gave less than six numbers");
+            message.add(LESS_NUMBERS.getMessage());
         }
         if (hasDuplicate(numbersFromUser)) {
-            message.add("Your numbers have duplicate");
+            message.add(NUMBER_DUPLICATED.getMessage());
         }
         boolean valid = message.isEmpty();
         if (valid) {
