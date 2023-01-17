@@ -6,7 +6,7 @@ import pl.lotto.numberreceiver.dto.LotteryTicketDto;
 
 public class DrawnNumbersMapper {
 
-    public static DrawnNumbers mapToDrownNumbers(DrawnNumbersDto dto) {
+    public static DrawnNumbers mapToDrawnNumbers(DrawnNumbersDto dto) {
         return DrawnNumbers.builder()
                 .drawNumbers(dto.drawNumbers())
                 .drawDate(dto.drawDate())
@@ -14,7 +14,7 @@ public class DrawnNumbersMapper {
                 .build();
     }
 
-    public static DrawnNumbersDto mapToLotteryTicketDto(DrawnNumbers drawnNumbers) {
+    public static DrawnNumbersDto mapToDrawnNumbersDto(DrawnNumbers drawnNumbers) {
         return DrawnNumbersDto.builder()
                 .drawNumbers(drawnNumbers.drawNumbers())
                 .drawDate(drawnNumbers.drawDate())

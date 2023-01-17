@@ -7,20 +7,10 @@ import java.util.List;
 
 public class NumberGenerator {
 
-    List<Integer> generateNumber(LocalDateTime date) {
-            if(isDrawDateTime(date)) {
+    List<Integer> generateNumber() {
                return drawingMachine();
-            }
-            return  List.of();
     }
 
-    boolean isDrawDateTime(LocalDateTime date) {
-        if(date.getDayOfWeek().equals(DayOfWeek.SATURDAY) && date.getHour() == 20 && date.getMinute() == 0) {
-            return true;
-        }
-
-        return false;
-    }
 
     List<Integer> drawingMachine() {
         List<Integer> drawnNumbers = new ArrayList<>();

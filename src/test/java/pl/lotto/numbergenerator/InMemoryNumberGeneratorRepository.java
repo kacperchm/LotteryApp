@@ -5,6 +5,7 @@ import pl.lotto.numberreceiver.NumberReceiverRepository;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -20,12 +21,9 @@ public class InMemoryNumberGeneratorRepository implements NumberGeneratorReposit
 
     @Override
     public DrawnNumbers findDrawnNumbersByDrawDate(LocalDateTime drawDate) {
-            List<DrawnNumbers> filteredDrawNumbers = drawnNumbersDB.stream()
-                .filter(drawnNumbers -> drawnNumbers.drawDate().equals(drawDate))
-                .collect(Collectors.toList());
-            if(filteredDrawNumbers.size() == 1) {
-                return filteredDrawNumbers.get(0);
-            }
-            return null;
+            return drawnNumbersDB.stream()
+                    .filter(drawnNumbers -> drawnNumbers.drawDate().equals(drawDate))
+                    .findFirst().orElse( new DrawnNumbers(null,null, Collections.emptyList()))
+        ;
     }
 }
