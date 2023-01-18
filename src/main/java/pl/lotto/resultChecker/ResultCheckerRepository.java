@@ -12,5 +12,5 @@ public interface ResultCheckerRepository {
 
     Result findByTicketID(String id);
 
-    void updateResult(String ticketId);
+    void delete(String ticketId);
 }
