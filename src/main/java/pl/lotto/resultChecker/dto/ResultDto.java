@@ -1,4 +1,4 @@
-package pl.lotto.resultChecker;
+package pl.lotto.resultChecker.dto;
 
 import lombok.Builder;
 
@@ -13,7 +13,6 @@ public record ResultDto(
         LocalDateTime drawDate,
         List<Integer> winningNumbers,
         int correctNumbers,
-        String message,
-        boolean numbersChecked
+        String message
 ) {
 }

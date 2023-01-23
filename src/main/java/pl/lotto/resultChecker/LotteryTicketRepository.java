@@ -1,12 +1,12 @@
 package pl.lotto.resultChecker;
 
-import pl.lotto.numberreceiver.LotteryTicket;
-
 import java.time.LocalDateTime;
 import java.util.List;
 
 public interface LotteryTicketRepository {
-    LotteryTicket save(LotteryTicket lotteryTicket);
+    LotteryTicketRC save(LotteryTicketRC lotteryTicket);
 
-    List<LotteryTicket> findAllByDrawDate(LocalDateTime drawDate);
+    List<LotteryTicketRC> findAllByDrawDate(LocalDateTime drawDate);
+
+    void saveAll(List<LotteryTicketRC> lotteryTicketList);
 }

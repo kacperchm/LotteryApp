@@ -1,4 +1,7 @@
-package pl.lotto.resultChecker;
+package pl.lotto.util.mapper;
+
+import pl.lotto.resultChecker.Result;
+import pl.lotto.resultChecker.dto.ResultDto;
 
 public class ResultMapper {
 
@@ -12,7 +15,6 @@ public class ResultMapper {
                 .winningNumbers(dto.winningNumbers())
                 .correctNumbers(dto.correctNumbers())
                 .message(dto.message())
-                .numbersChecked(dto.numbersChecked())
                 .build();
     }
 
@@ -25,7 +27,6 @@ public class ResultMapper {
                 .winningNumbers(result.winningNumbers())
                 .correctNumbers(result.correctNumbers())
                 .message(result.message())
-                .numbersChecked(result.numbersChecked())
                 .build();
     }
 }

@@ -1,5 +1,6 @@
-package pl.lotto.numberreceiver;
+package pl.lotto.util.mapper;
 
+import pl.lotto.numberreceiver.LotteryTicket;
 import pl.lotto.numberreceiver.dto.LotteryTicketDto;
 
 public class LotteryTicketMapper {

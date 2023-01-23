@@ -7,8 +7,11 @@ import java.util.List;
 
 @Builder
 public record DrawnNumbers(
-        Long drawId,
+        String drawId,
         LocalDateTime drawDate,
         List<Integer> drawNumbers
 ) {
+    public DrawnNumbers(LocalDateTime drawDate, List<Integer> drawNumbers) {
+        this(null, drawDate, drawNumbers);
+    }
 }

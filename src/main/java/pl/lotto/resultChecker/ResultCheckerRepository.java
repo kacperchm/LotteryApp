@@ -7,6 +7,7 @@ import java.util.List;
 
 public interface ResultCheckerRepository {
     Result save(Result result);
+    void saveAll(List<Result> result);
 
     List<Result> findAllByDrawDate(LocalDateTime drawDate);
 

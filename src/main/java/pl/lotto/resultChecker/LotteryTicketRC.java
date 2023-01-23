@@ -6,13 +6,11 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Builder
-public record Result(
+public record LotteryTicketRC(
         String ticketID,
-        List<Integer> playerNumbers,
+        List<Integer> lotteryNumbers,
         LocalDateTime creationTicketDate,
-        LocalDateTime drawDate,
-        List<Integer> winningNumbers,
-        int correctNumbers,
-        String message
+        LocalDateTime drawDate
 ) {
 }
+

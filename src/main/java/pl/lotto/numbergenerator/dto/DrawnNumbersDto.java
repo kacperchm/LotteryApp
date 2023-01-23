@@ -8,7 +8,7 @@ import java.util.List;
 
 @Builder
 public record DrawnNumbersDto(
-       Long drawId,
+       String drawId,
        LocalDateTime drawDate,
        List<Integer> drawNumbers
 ) {

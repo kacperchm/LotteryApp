@@ -5,20 +5,23 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
+
 import pl.lotto.numberreceiver.dto.LotteryTicketDto;
+import pl.lotto.util.Finder;
+import pl.lotto.util.mapper.LotteryTicketMapper;
 
 public class NumberReceiverFacade {
 
     private final NumberReceiverRepository repository;
     private final NumberValidator numberValidator;
-    private final DrawDateGenerator drawDateGenerator;
+    private final Finder finder;
     private final Clock clock;
 
-    public NumberReceiverFacade(NumberValidator numberValidator, Clock clock, NumberReceiverRepository repository, DrawDateGenerator drawDateGenerator) {
+    public NumberReceiverFacade(NumberValidator numberValidator, Clock clock, NumberReceiverRepository repository, Finder finder) {
         this.numberValidator = numberValidator;
         this.clock = clock;
         this.repository = repository;
-        this.drawDateGenerator = drawDateGenerator;
+        this.finder = finder;
     }
 
     public InputNumbersResultDto inputNumbers(List<Integer> numbersFromUser) {
@@ -29,7 +32,7 @@ public class NumberReceiverFacade {
         }
         String generatedId = UUID.randomUUID().toString();
         LocalDateTime dateOfCreationTicket = LocalDateTime.now(clock);
-        LocalDateTime drawDate = drawDateGenerator.findFirstSaturday(dateOfCreationTicket);
+        LocalDateTime drawDate = finder.findFirstSaturday(dateOfCreationTicket);
         LotteryTicket savedLotteryTicket = repository.save(new LotteryTicket(generatedId,
                 numbersFromUser,
                 dateOfCreationTicket,
