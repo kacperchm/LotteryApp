@@ -1,4 +1,4 @@
-package pl.lotto.numberreceiver;
+package pl.lotto.numberReceiver;
 
 import java.time.Clock;
 import java.time.LocalDateTime;
@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
-import pl.lotto.numberreceiver.dto.LotteryTicketDto;
+import pl.lotto.numberReceiver.dto.LotteryTicketDto;
 import pl.lotto.util.Finder;
 import pl.lotto.util.mapper.LotteryTicketMapper;
 

@@ -1,6 +1,4 @@
-package pl.lotto.numberreceiver;
-
-import java.util.List;
+package pl.lotto.numberReceiver;
 
 record ValidationResult(
         boolean isValid,

@@ -1,7 +1,6 @@
 package pl.lotto.resultChecker;
 
-import pl.lotto.numberreceiver.LotteryTicket;
-import pl.lotto.numberreceiver.dto.LotteryTicketDto;
+import pl.lotto.numberReceiver.dto.LotteryTicketDto;
 
 import java.util.Collections;
 import java.util.List;

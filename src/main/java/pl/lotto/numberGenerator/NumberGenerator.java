@@ -1,7 +1,5 @@
-package pl.lotto.numbergenerator;
+package pl.lotto.numberGenerator;
 
-import java.time.DayOfWeek;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 

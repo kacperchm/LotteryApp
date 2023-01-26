@@ -1,4 +1,4 @@
-package pl.lotto.numberreceiver;
+package pl.lotto.numberReceiver;
 
 import java.time.Clock;
 import java.time.LocalDateTime;
@@ -6,7 +6,7 @@ import java.time.ZoneId;
 import java.time.ZoneOffset;
 import java.util.List;
 import org.junit.jupiter.api.Test;
-import pl.lotto.numberreceiver.dto.LotteryTicketDto;
+import pl.lotto.numberReceiver.dto.LotteryTicketDto;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class NumberReceiverFacadeTest {

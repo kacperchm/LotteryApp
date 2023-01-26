@@ -1,7 +1,7 @@
-package pl.lotto.numbergenerator;
+package pl.lotto.numberGenerator;
 
-import pl.lotto.numbergenerator.dto.DrawnNumbersDto;
-import pl.lotto.numberreceiver.dto.LotteryTicketDto;
+import pl.lotto.numberGenerator.dto.DrawnNumbersDto;
+import pl.lotto.numberReceiver.dto.LotteryTicketDto;
 import pl.lotto.util.Finder;
 import pl.lotto.util.mapper.DrawnNumbersMapper;
 

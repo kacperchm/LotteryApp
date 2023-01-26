@@ -1,7 +1,7 @@
 package pl.lotto.util.mapper;
 
-import pl.lotto.numberreceiver.LotteryTicket;
-import pl.lotto.numberreceiver.dto.LotteryTicketDto;
+import pl.lotto.numberReceiver.LotteryTicket;
+import pl.lotto.numberReceiver.dto.LotteryTicketDto;
 
 public class LotteryTicketMapper {
 

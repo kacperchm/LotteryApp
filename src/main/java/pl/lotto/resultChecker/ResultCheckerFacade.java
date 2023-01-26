@@ -1,9 +1,9 @@
 package pl.lotto.resultChecker;
 
-import pl.lotto.numbergenerator.NumberGeneratorFacade;
-import pl.lotto.numbergenerator.dto.DrawnNumbersDto;
-import pl.lotto.numberreceiver.NumberReceiverFacade;
-import pl.lotto.numberreceiver.dto.LotteryTicketDto;
+import pl.lotto.numberGenerator.NumberGeneratorFacade;
+import pl.lotto.numberGenerator.dto.DrawnNumbersDto;
+import pl.lotto.numberReceiver.NumberReceiverFacade;
+import pl.lotto.numberReceiver.dto.LotteryTicketDto;
 import pl.lotto.resultChecker.dto.ResultDto;
 import pl.lotto.util.Finder;
 import pl.lotto.util.mapper.ResultMapper;
@@ -29,15 +29,12 @@ public class ResultCheckerFacade {
 
     void lotteryTicketSaver() {
         LocalDateTime now = Finder.findFirstSaturday(LocalDateTime.now());
-        List<LotteryTicketDto> retrieveNumbers = numberReceiverFacade.retrieveNumbersFromUser(now);
-        List<LotteryTicketRC> retrieveNumbersRC = LotteryTicketChanger.lotteryTicketListChanger(retrieveNumbers);
+        List<LotteryTicketRC> retrieveNumbersRC = LotteryTicketChanger
+                .lotteryTicketListChanger(numberReceiverFacade.retrieveNumbersFromUser(now));
         List<LotteryTicketRC> lotteryTicketsFromRepository = lotteryTicketRepository.findAllByDrawDate(now);
         List<LotteryTicketRC> lotteryTicketsToSave =
                 Comparator.compareListOfLotteryTicket(lotteryTicketsFromRepository, retrieveNumbersRC);
         if (!(lotteryTicketsToSave.isEmpty())) {
-            for (LotteryTicketRC ticket : lotteryTicketsToSave) {
-                lotteryTicketsToSave.add(ticket);
-            }
             lotteryTicketRepository.saveAll(lotteryTicketsToSave);
         }
     }
@@ -56,13 +53,17 @@ public class ResultCheckerFacade {
                             lotteryTicket.drawDate(),
                             drawnNumbersDto.drawNumbers(),
                             winningNum,
-                            "Your ticket has " + winningNum + " correct numbers"));
+                            "Your lottery ticket " + lotteryTicket.ticketID() + " from "
+                                    + lotteryTicket.creationTicketDate() +  " has " + winningNum + " correct numbers."));
         }
         repository.saveAll(results);
     }
 
     public ResultDto checkWinner(String lotteryTicketID) {
-        ResultDto resultDto = ResultMapper.mapToResultDto(repository.findByTicketID(lotteryTicketID));
+        Result result = repository.findByTicketID(lotteryTicketID)
+                .orElse(new Result(null,null,null,null, null,
+                        0, "Lottery ticket does not exist."));
+        ResultDto resultDto = ResultMapper.mapToResultDto(result);
         return resultDto;
     }
 

@@ -1,9 +1,8 @@
-package pl.lotto.numbergenerator.dto;
+package pl.lotto.numberGenerator.dto;
 
 import lombok.Builder;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
 @Builder

@@ -1,17 +1,16 @@
 package pl.lotto.resultChecker;
 
-import pl.lotto.numberreceiver.LotteryTicket;
-
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 public interface ResultCheckerRepository {
     Result save(Result result);
-    void saveAll(List<Result> result);
+    void saveAll(List<Result> results);
 
     List<Result> findAllByDrawDate(LocalDateTime drawDate);
 
-    Result findByTicketID(String id);
+    Optional<Result> findByTicketID(String id);
 
     void delete(String ticketId);
 }

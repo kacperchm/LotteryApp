@@ -1,9 +1,9 @@
-package pl.lotto.numbergenerator;
+package pl.lotto.numberGenerator;
 
 import org.junit.jupiter.api.Test;
-import pl.lotto.numbergenerator.dto.DrawnNumbersDto;
+import pl.lotto.numberGenerator.dto.DrawnNumbersDto;
+import pl.lotto.util.mapper.DrawnNumbersMapper;
 
-import java.time.DayOfWeek;
 import java.time.LocalDateTime;
 
 import static org.assertj.core.api.Assertions.assertThat;

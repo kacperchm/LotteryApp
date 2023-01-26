@@ -1,9 +1,9 @@
-package pl.lotto.numberreceiver;
+package pl.lotto.numberReceiver;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static pl.lotto.numberreceiver.ValidationError.*;
+import static pl.lotto.numberReceiver.ValidationError.*;
 
 class NumberValidator {
 
