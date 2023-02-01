@@ -6,9 +6,8 @@ import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+import pl.lotto.numberReceiver.dto.InputNumbersResultDto;
 import pl.lotto.numberReceiver.dto.LotteryTicketDto;
-import pl.lotto.util.Finder;
-import pl.lotto.util.mapper.LotteryTicketMapper;
 
 public class NumberReceiverFacade {
 
@@ -17,11 +16,11 @@ public class NumberReceiverFacade {
     private final Finder finder;
     private final Clock clock;
 
-    public NumberReceiverFacade(NumberValidator numberValidator, Clock clock, NumberReceiverRepository repository, Finder finder) {
+    public NumberReceiverFacade(NumberValidator numberValidator, Clock clock, NumberReceiverRepository repository) {
         this.numberValidator = numberValidator;
         this.clock = clock;
         this.repository = repository;
-        this.finder = finder;
+        this.finder = new Finder();
     }
 
     public InputNumbersResultDto inputNumbers(List<Integer> numbersFromUser) {

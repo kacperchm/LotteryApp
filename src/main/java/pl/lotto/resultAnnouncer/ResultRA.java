@@ -3,7 +3,7 @@ package pl.lotto.resultAnnouncer;
 import java.time.LocalDateTime;
 import java.util.List;
 
-public record ResultRA(
+record ResultRA(
         String ticketID,
         List<Integer> playerNumbers,
         LocalDateTime creationTicketDate,

@@ -1,4 +1,4 @@
-package pl.lotto.util.mapper;
+package pl.lotto.numberReceiver;
 
 import pl.lotto.numberReceiver.LotteryTicket;
 import pl.lotto.numberReceiver.dto.LotteryTicketDto;

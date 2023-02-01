@@ -2,8 +2,8 @@ package pl.lotto.resultChecker;
 
 import java.util.List;
 
-public class MatchingNumbers {
-    public static int checkMatchingNum(List<Integer> playerNumbers, List<Integer> winningNumbers) {
+class MatchingNumbers {
+    int checkMatchingNum(List<Integer> playerNumbers, List<Integer> winningNumbers) {
         int correctNumbers = 0;
         for (int i = 0; i < playerNumbers.size(); i++) {
             for (int j = 0; j < winningNumbers.size(); j++) {

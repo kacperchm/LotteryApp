@@ -2,8 +2,6 @@ package pl.lotto.numberGenerator;
 
 import pl.lotto.numberGenerator.dto.DrawnNumbersDto;
 import pl.lotto.numberReceiver.dto.LotteryTicketDto;
-import pl.lotto.util.Finder;
-import pl.lotto.util.mapper.DrawnNumbersMapper;
 
 import java.time.DayOfWeek;
 import java.time.LocalDateTime;
@@ -19,18 +17,22 @@ public class NumberGeneratorFacade {
     private NumberGeneratorRepository repository;
     private LocalDateTime now;
 
+    private Finder finder;
+
 
     public NumberGeneratorFacade(NumberGenerator numberGenerator, NumberGeneratorRepository repository, LocalDateTime now) {
         this.numberGenerator = numberGenerator;
         this.repository = repository;
         this.now = now;
+        this.finder = new Finder();
+
     }
 
     //TODO: fix this method. Use scheduler (Spring)
 
     DrawnNumbersDto generateWonNumbers() {
 
-        LocalDateTime drawDate = Finder.findFirstSaturday(now);
+        LocalDateTime drawDate = finder.findFirstSaturday(now);
 
         List<Integer> drawNumbers = numberGenerator.generateNumber();
         DrawnNumbers savedDrawnNumbers = repository.save(new DrawnNumbers(UUID.randomUUID().toString(), drawDate, drawNumbers));

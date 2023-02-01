@@ -2,7 +2,7 @@ package pl.lotto.resultAnnouncer;
 
 import pl.lotto.resultChecker.dto.ResultDto;
 
-public class ResultChanger {
+ class ResultChanger {
 
 
     public static ResultRA resultChanger (ResultDto resultToChange) {

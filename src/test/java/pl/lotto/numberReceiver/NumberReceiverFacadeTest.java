@@ -6,6 +6,7 @@ import java.time.ZoneId;
 import java.time.ZoneOffset;
 import java.util.List;
 import org.junit.jupiter.api.Test;
+import pl.lotto.numberReceiver.dto.InputNumbersResultDto;
 import pl.lotto.numberReceiver.dto.LotteryTicketDto;
 import static org.assertj.core.api.Assertions.assertThat;
 

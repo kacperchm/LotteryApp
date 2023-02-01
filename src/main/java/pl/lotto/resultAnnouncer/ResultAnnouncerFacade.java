@@ -27,6 +27,6 @@ public class ResultAnnouncerFacade {
             default -> OTHER.getPrize();
         };
 
-        return result.message() + " Twoja nagroda wynosi " + prize;
+        return result.message() + " Your lottery prize is " + prize;
     }
 }

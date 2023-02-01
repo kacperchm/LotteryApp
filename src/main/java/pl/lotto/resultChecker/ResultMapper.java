@@ -1,4 +1,4 @@
-package pl.lotto.util.mapper;
+package pl.lotto.resultChecker;
 
 import pl.lotto.resultChecker.Result;
 import pl.lotto.resultChecker.dto.ResultDto;

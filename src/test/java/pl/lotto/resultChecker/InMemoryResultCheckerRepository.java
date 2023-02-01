@@ -1,47 +1,56 @@
 package pl.lotto.resultChecker;
 
-import pl.lotto.numberReceiver.LotteryTicket;
-import pl.lotto.numberReceiver.NumberReceiverRepository;
-
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
+import java.util.*;
 
 public class InMemoryResultCheckerRepository implements ResultCheckerRepository {
 
-    List<Result> resultDb = new ArrayList<>();
+    public Map<String,Result> resultDb = new HashMap<>();
 
     @Override
     public Result save(Result result) {
-        resultDb.add(result);
+        resultDb.put(result.ticketID(), result);
         return result;
     }
 
     @Override
-    public void saveAll(List<Result> results) {
-        resultDb.addAll(results);
+    public List<Result> saveAll(List<Result> results) {
+        Map<String,Result> temporaryResultMap = new HashMap<>();
+        for (Result result: results) {
+            temporaryResultMap.put(result.ticketID(), result);
+        }
+        resultDb.putAll(temporaryResultMap);
+        return results;
     }
 
     @Override
     public List<Result> findAllByDrawDate(LocalDateTime drawDate) {
-        List<Result> resultListWithCorrectDrawDate = resultDb.stream()
+        List<Result> resultsDbList = new ArrayList<>();
+        resultDb.forEach((s, result) -> resultsDbList.add(result));
+        List<Result> resultListWithCorrectDrawDate = resultsDbList.stream()
                 .filter(result -> result.drawDate().equals(drawDate))
                 .toList();
-
         return resultListWithCorrectDrawDate;
     }
 
 
     @Override
     public Optional<Result> findByTicketID(String id) {
-        return Optional.of(resultDb.stream().findFirst().filter(result -> result.ticketID().equals(id)).get());
+        return Optional.of(resultDb.get(id));
     }
 
     @Override
     public void delete(String ticketId) {
         resultDb.remove(ticketId);
+    }
+
+    @Override
+    public void updateAll(List<Result> resultList) {
+        Map<String,Result> temporaryResultMap = new HashMap<>();
+        for (Result result : resultList) {
+            resultDb.remove(result.ticketID());
+            temporaryResultMap.put(result.ticketID(), result);
+        }
+        resultDb.putAll(temporaryResultMap);
     }
 }

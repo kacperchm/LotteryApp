@@ -2,7 +2,6 @@ package pl.lotto.numberGenerator;
 
 import org.junit.jupiter.api.Test;
 import pl.lotto.numberGenerator.dto.DrawnNumbersDto;
-import pl.lotto.util.mapper.DrawnNumbersMapper;
 
 import java.time.LocalDateTime;
 

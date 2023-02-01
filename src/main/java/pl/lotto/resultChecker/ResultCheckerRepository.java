@@ -6,11 +6,13 @@ import java.util.Optional;
 
 public interface ResultCheckerRepository {
     Result save(Result result);
-    void saveAll(List<Result> results);
+    List<Result> saveAll(List<Result> results);
 
     List<Result> findAllByDrawDate(LocalDateTime drawDate);
 
     Optional<Result> findByTicketID(String id);
 
     void delete(String ticketId);
+
+    void updateAll(List<Result> resultList);
 }

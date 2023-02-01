@@ -1,4 +1,4 @@
-package pl.lotto.util.mapper;
+package pl.lotto.numberGenerator;
 
 import pl.lotto.numberGenerator.DrawnNumbers;
 import pl.lotto.numberGenerator.dto.DrawnNumbersDto;

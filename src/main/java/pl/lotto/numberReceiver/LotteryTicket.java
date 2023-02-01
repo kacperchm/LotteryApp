@@ -5,7 +5,7 @@ import java.util.List;
 import lombok.Builder;
 
 @Builder
-public record LotteryTicket(
+ record LotteryTicket(
         String ticketID,
         List<Integer> lotteryNumbers,
         LocalDateTime creationTicketDate,

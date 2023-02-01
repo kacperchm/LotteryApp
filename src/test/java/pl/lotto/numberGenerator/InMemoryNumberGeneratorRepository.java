@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 public class InMemoryNumberGeneratorRepository implements NumberGeneratorRepository {
 
@@ -16,10 +17,9 @@ public class InMemoryNumberGeneratorRepository implements NumberGeneratorReposit
     }
 
     @Override
-    public DrawnNumbers findDrawnNumbersByDrawDate(LocalDateTime drawDate) {
-            return drawnNumbersDB.stream()
+    public Optional<DrawnNumbers> findDrawnNumbersByDrawDate(LocalDateTime drawDate) {
+            return Optional.of(drawnNumbersDB.stream()
                     .filter(drawnNumbers -> drawnNumbers.drawDate().equals(drawDate))
-                    .findFirst().orElse( new DrawnNumbers(null,null, Collections.emptyList()))
-        ;
+                    .findFirst().orElse( new DrawnNumbers(null,null, Collections.emptyList())));
     }
 }

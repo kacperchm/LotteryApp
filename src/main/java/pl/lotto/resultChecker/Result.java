@@ -6,7 +6,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Builder
-public record Result(
+record Result(
         String ticketID,
         List<Integer> playerNumbers,
         LocalDateTime creationTicketDate,
