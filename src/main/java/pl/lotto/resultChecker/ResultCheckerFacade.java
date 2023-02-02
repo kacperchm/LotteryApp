@@ -7,6 +7,7 @@ import pl.lotto.resultChecker.dto.ResultDto;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class ResultCheckerFacade {
@@ -63,7 +64,7 @@ public class ResultCheckerFacade {
 
     public ResultDto checkWinner(String lotteryTicketID) {
         Result result = repository.findByTicketID(lotteryTicketID)
-                .orElse(new Result(null, null, null, null, null,
+                .orElse(new Result(null, Collections.emptyList(), null, null, Collections.emptyList(),
                         0, "Lottery ticket does not exist."));
         ResultDto resultDto = ResultMapper.mapToResultDto(result);
         return resultDto;
