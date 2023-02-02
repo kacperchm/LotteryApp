@@ -13,7 +13,7 @@ public class ResultAnnouncerFacade {
     }
 
     public String checkTicket (String lotteryTicketId) {
-        ResultRA result = ResultChanger.resultChanger(resultCheckerFacade.checkWinner(lotteryTicketId));
+        Result result = ResultChanger.resultMapper(resultCheckerFacade.checkWinner(lotteryTicketId));
 
         if(result.ticketID() == null) {
             return result.message();

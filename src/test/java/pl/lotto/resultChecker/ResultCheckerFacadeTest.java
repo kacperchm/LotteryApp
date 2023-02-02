@@ -1,6 +1,5 @@
 package pl.lotto.resultChecker;
 
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import pl.lotto.numberGenerator.NumberGeneratorFacade;
@@ -13,7 +12,6 @@ import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.List;
 
-import static org.assertj.core.api.Assertions.as;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
@@ -50,7 +48,7 @@ public class ResultCheckerFacadeTest {
                         List.of(2, 16, 56, 42, 12, 92)));
         ResultCheckerFacade resultCheckerFacade = new ResultCheckerFacade(numberGeneratorFacade, numberReceiverFacade, repository);
         //when
-        resultCheckerFacade.lotteryTicketSaver();
+        resultCheckerFacade.transformToResult();
         //then
         assertThat(repository.findAllByDrawDate(LocalDateTime.of(2023, 2, 4, 20, 0)).size()).isEqualTo(8);
         assertThat(repository.findAllByDrawDate(LocalDateTime.of(2023, 2, 4, 20, 0)).get(0).message())
@@ -84,15 +82,15 @@ public class ResultCheckerFacadeTest {
                         List.of(2, 16, 56, 42, 12, 92)));
         ResultCheckerFacade resultCheckerFacade = new ResultCheckerFacade(numberGeneratorFacade, numberReceiverFacade, repository);
         //when
-        resultCheckerFacade.lotteryTicketSaver();
+        resultCheckerFacade.transformToResult();
         //then
-        assertThat(repository.findAllByDrawDate(LocalDateTime.of(2023, 2, 4, 20, 0)).size()).isEqualTo(4);
+        assertThat(repository.findAllByDrawDate(LocalDateTime.of(2023, 2, 4, 20, 0))).hasSize(4);
         assertThat(repository.findAllByDrawDate(LocalDateTime.of(2023, 2, 4, 20, 0)).get(0).message())
                 .isEqualTo("The numbers have not been drawn yet");
     }
 
     @Test
-    public void should_update_three_result_to_incude_winning_numbers() {
+    public void should_update_three_result_to_include_winning_numbers() {
         //given
         NumberReceiverFacade numberReceiverFacade = mock(NumberReceiverFacade.class);
         Mockito.when(numberReceiverFacade.retrieveNumbersFromUser(any())).thenReturn(List.of(
@@ -117,8 +115,8 @@ public class ResultCheckerFacadeTest {
                 .thenReturn(new DrawnNumbersDto("DRW001", LocalDateTime.of(2023, 1, 28, 20, 0),
                         List.of(2, 16, 56, 42, 12, 92)));
         ResultCheckerFacade resultCheckerFacade = new ResultCheckerFacade(numberGeneratorFacade, numberReceiverFacade, repository);
+        resultCheckerFacade.transformToResult();
         //when
-        resultCheckerFacade.lotteryTicketSaver();
         resultCheckerFacade.checkNumbers();
         //then
         assertThat(repository.findAllByDrawDate(LocalDateTime.of(2023, 1, 28, 20, 0)).size()).isEqualTo(3);
@@ -156,7 +154,7 @@ public class ResultCheckerFacadeTest {
                         List.of(5, 22, 56, 42, 12, 92)));
         ResultCheckerFacade resultCheckerFacade = new ResultCheckerFacade(numberGeneratorFacade, numberReceiverFacade, repository);
         //when
-        resultCheckerFacade.lotteryTicketSaver();
+        resultCheckerFacade.transformToResult();
         resultCheckerFacade.checkNumbers();
         ResultDto result = resultCheckerFacade.checkWinner("TID002");
         //then
@@ -193,7 +191,7 @@ public class ResultCheckerFacadeTest {
                         List.of(5, 22, 56, 42, 12, 92)));
         ResultCheckerFacade resultCheckerFacade = new ResultCheckerFacade(numberGeneratorFacade, numberReceiverFacade, repository);
         //when
-        resultCheckerFacade.lotteryTicketSaver();
+        resultCheckerFacade.transformToResult();
         resultCheckerFacade.checkNumbers();
         ResultDto result = resultCheckerFacade.checkWinner("TID005");
         //then
@@ -216,14 +214,14 @@ public class ResultCheckerFacadeTest {
                         List.of(5, 22, 56, 42, 12, 92)));
         ResultCheckerFacade resultCheckerFacade = new ResultCheckerFacade(numberGeneratorFacade, numberReceiverFacade, repository);
         //when
-        resultCheckerFacade.lotteryTicketSaver();
+        resultCheckerFacade.transformToResult();
         resultCheckerFacade.checkNumbers();
         ResultDto result = resultCheckerFacade.checkWinner("TID005");
         //then
         assertThat(result.correctNumbers()).isEqualTo(0);
-        assertThat(result.drawDate()).isEqualTo(null);
+        assertThat(result.drawDate()).isNull();
         assertThat(result.playerNumbers()).isEqualTo(Collections.emptyList());
-        assertThat(result.creationTicketDate()).isEqualTo(null);
+        assertThat(result.creationTicketDate()).isNull();
         assertThat(result.message()).isEqualTo("Lottery ticket does not exist.");
     }
 

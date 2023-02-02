@@ -36,7 +36,7 @@ public class InMemoryResultCheckerRepository implements ResultCheckerRepository 
 
     @Override
     public Optional<Result> findByTicketID(String id) {
-        return Optional.of(resultDb.get(id));
+        return Optional.ofNullable(resultDb.get(id));
     }
 
     @Override

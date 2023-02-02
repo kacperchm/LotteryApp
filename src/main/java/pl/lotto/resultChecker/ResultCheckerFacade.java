@@ -31,7 +31,7 @@ public class ResultCheckerFacade {
         this.matchingNumbers = new MatchingNumbers();
     }
 
-    void lotteryTicketSaver() {
+    void transformToResult() {
         LocalDateTime now = finder.findFirstSaturday(LocalDateTime.now());
         List<Result> resultsWithoutDrawnNumbers = mapper.mapToResults(numberReceiverFacade.retrieveNumbersFromUser(now));
         List<Result> resultsFromRepository = repository.findAllByDrawDate(now);
