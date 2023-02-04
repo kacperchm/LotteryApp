@@ -13,9 +13,9 @@ public class ResultAnnouncerFacade {
     }
 
     public String checkTicket (String lotteryTicketId) {
-        Result result = ResultChanger.resultMapper(resultCheckerFacade.checkWinner(lotteryTicketId));
+        Result result = ResultMapper.map(resultCheckerFacade.checkWinner(lotteryTicketId));
 
-        if(result.ticketID() == null) {
+        if(result.ticketID() == null || result.winningNumbers().isEmpty()) {
             return result.message();
         }
 
