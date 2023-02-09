@@ -25,7 +25,7 @@ class ResultAnnouncerFacadeTest {
                         List.of(24, 5, 32, 72, 53, 91), 6, "Your lottery ticket TID001 from 2023-01-03T12:00 has 6 correct numbers."));
         ResultAnnouncerFacade resultAnnouncerFacade = new ResultAnnouncerFacade(resultCheckerFacade);
         //when
-        String message = resultAnnouncerFacade.checkTicket("TID001");
+        String message = resultAnnouncerFacade.checkTicket("TID001").message();
         //then
         assertThat(message).isEqualTo("Your lottery ticket TID001 from 2023-01-03T12:00 has 6 correct numbers. Your lottery prize is 1 200 000,00 zł");
     }
@@ -39,7 +39,7 @@ class ResultAnnouncerFacadeTest {
                         0, "Lottery ticket does not exist."));
         ResultAnnouncerFacade resultAnnouncerFacade = new ResultAnnouncerFacade(resultCheckerFacade);
         //when
-        String message = resultAnnouncerFacade.checkTicket("TID001");
+        String message = resultAnnouncerFacade.checkTicket("TID001").message();
         //then
         assertThat(message).isEqualTo("Lottery ticket does not exist.");
     }
@@ -55,7 +55,7 @@ class ResultAnnouncerFacadeTest {
                         Collections.emptyList(), 0, "The numbers have not been drawn yet"));
         ResultAnnouncerFacade resultAnnouncerFacade = new ResultAnnouncerFacade(resultCheckerFacade);
         //when
-        String message = resultAnnouncerFacade.checkTicket("TID001");
+        String message = resultAnnouncerFacade.checkTicket("TID001").message();
         //then
         assertThat(message).isEqualTo("The numbers have not been drawn yet");
     }

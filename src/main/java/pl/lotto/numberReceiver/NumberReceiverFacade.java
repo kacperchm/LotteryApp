@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+import org.springframework.stereotype.Component;
 import pl.lotto.numberReceiver.dto.InputNumbersResultDto;
 import pl.lotto.numberReceiver.dto.LotteryTicketDto;
 

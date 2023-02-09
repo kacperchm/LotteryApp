@@ -1,6 +1,6 @@
 package pl.lotto.numberReceiver;
 
-enum ValidationError {
+public enum ValidationError {
 
     NUMBER_DUPLICATED("Your numbers have duplicate"),
     OUT_OF_RANGE("Number from outside the range"),
@@ -13,7 +13,7 @@ enum ValidationError {
         this.message = message;
     }
 
-    String getMessage() {
+    public String getMessage() {
         return message;
     }
 }

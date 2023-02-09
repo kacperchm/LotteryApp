@@ -12,11 +12,11 @@ public class ResultAnnouncerFacade {
         this.resultCheckerFacade = resultCheckerFacade;
     }
 
-    public String checkTicket (String lotteryTicketId) {
+    public ResultAnnouncerResponseDto checkTicket (String lotteryTicketId) {
         Result result = ResultMapper.map(resultCheckerFacade.checkWinner(lotteryTicketId));
 
         if(result.ticketID() == null || result.winningNumbers().isEmpty()) {
-            return result.message();
+            return new ResultAnnouncerResponseDto(result.message());
         }
 
         String prize = switch (result.correctNumbers()) {
@@ -27,6 +27,6 @@ public class ResultAnnouncerFacade {
             default -> OTHER.getPrize();
         };
 
-        return result.message() + " Your lottery prize is " + prize;
+        return new ResultAnnouncerResponseDto(result.message() + " Your lottery prize is " + prize);
     }
 }
