@@ -18,6 +18,7 @@ public class ResultCheckerFacade {
     private Comparator comparator;
     private LotteryTicketMapper mapper;
     private MatchingNumbers matchingNumbers;
+    private ResultsUpdater resultsUpdater;
 
 
     public ResultCheckerFacade(NumberGeneratorFacade numberGeneratorFacade, NumberReceiverFacade numberReceiverFacade,
@@ -29,6 +30,7 @@ public class ResultCheckerFacade {
         this.comparator = new Comparator();
         this.mapper = new LotteryTicketMapper();
         this.matchingNumbers = new MatchingNumbers();
+        this.resultsUpdater = new ResultsUpdater();
     }
 
     void transformToResult() {
@@ -46,19 +48,7 @@ public class ResultCheckerFacade {
         LocalDateTime now = finder.findLastSaturday(LocalDateTime.now());
         List<Result> resultsToUpdate = repository.findAllByDrawDate(now);
         DrawnNumbersDto drawnNumbersDto = numberGeneratorFacade.retrieveWonNumbers(now);
-        List<Result> results = new ArrayList<>();
-        for (Result result : resultsToUpdate) {
-            int winningNum = matchingNumbers.checkMatchingNum(result.playerNumbers(), drawnNumbersDto.drawNumbers());
-            results.add(
-                    new Result(result.ticketID(),
-                            result.playerNumbers(),
-                            result.creationTicketDate(),
-                            result.drawDate(),
-                            drawnNumbersDto.drawNumbers(),
-                            winningNum,
-                            "Your lottery ticket " + result.ticketID() + " from "
-                                    + result.creationTicketDate() + " has " + winningNum + " correct numbers."));
-        }
+        List<Result> results = resultsUpdater.update(drawnNumbersDto, resultsToUpdate);
         repository.updateAll(results);
     }
 
