@@ -1,5 +1,6 @@
 package pl.lotto.numberGenerator;
 
+import org.springframework.stereotype.Component;
 import pl.lotto.numberGenerator.dto.DrawnNumbersDto;
 import pl.lotto.numberReceiver.dto.LotteryTicketDto;
 
@@ -10,6 +11,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
+@Component
 public class NumberGeneratorFacade {
 
     static ArrayList<LotteryTicketDto> drawsArchive = new ArrayList<>();

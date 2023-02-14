@@ -1,5 +1,6 @@
 package pl.lotto.resultChecker;
 
+import org.springframework.stereotype.Component;
 import pl.lotto.numberGenerator.NumberGeneratorFacade;
 import pl.lotto.numberGenerator.dto.DrawnNumbersDto;
 import pl.lotto.numberReceiver.NumberReceiverFacade;
@@ -10,6 +11,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+@Component
 public class ResultCheckerFacade {
     private NumberGeneratorFacade numberGeneratorFacade;
     private NumberReceiverFacade numberReceiverFacade;
