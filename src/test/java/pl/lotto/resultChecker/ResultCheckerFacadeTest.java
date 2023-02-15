@@ -4,11 +4,14 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import pl.lotto.numberGenerator.NumberGeneratorFacade;
 import pl.lotto.numberGenerator.dto.DrawnNumbersDto;
+import pl.lotto.resultChecker.AdjustableClock;
 import pl.lotto.numberReceiver.NumberReceiverFacade;
 import pl.lotto.numberReceiver.dto.LotteryTicketDto;
 import pl.lotto.resultChecker.dto.ResultDto;
 
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZoneOffset;
 import java.util.Collections;
 import java.util.List;
 
@@ -24,6 +27,8 @@ public class ResultCheckerFacadeTest {
     @Test
     public void should_save_whole_list_of_results_without_winning_numbers_to_repository() {
         //given
+        LocalDateTime now = LocalDateTime.of(2023, 2, 3, 20, 0);
+        AdjustableClock clock = new AdjustableClock(now.toInstant(ZoneOffset.UTC), ZoneId.of("Europe/Warsaw"));
         NumberReceiverFacade numberReceiverFacade = mock(NumberReceiverFacade.class);
         Mockito.when(numberReceiverFacade.retrieveNumbersFromUser(any())).thenReturn(List.of(
                 new LotteryTicketDto("TID001", List.of(24, 5, 32, 72, 53, 91), LocalDateTime.now(),
@@ -46,7 +51,7 @@ public class ResultCheckerFacadeTest {
         Mockito.when(numberGeneratorFacade.retrieveWonNumbers(LocalDateTime.of(2023, 2, 4, 20, 0)))
                 .thenReturn(new DrawnNumbersDto("DRW001", LocalDateTime.of(2023, 2, 4, 20, 0),
                         List.of(2, 16, 56, 42, 12, 92)));
-        ResultCheckerFacade resultCheckerFacade = new ResultCheckerFacade(numberGeneratorFacade, numberReceiverFacade, repository);
+        ResultCheckerFacade resultCheckerFacade = new ResultCheckerFacade(numberGeneratorFacade, numberReceiverFacade, repository,clock);
         //when
         resultCheckerFacade.transformToResult();
         //then
@@ -58,6 +63,8 @@ public class ResultCheckerFacadeTest {
     @Test
     public void should_save_four_results_without_winning_numbers_to_repository() {
         //given
+        LocalDateTime now = LocalDateTime.of(2023, 2, 3, 20, 0);
+        AdjustableClock clock = new AdjustableClock(now.toInstant(ZoneOffset.UTC), ZoneId.of("Europe/Warsaw"));
         NumberReceiverFacade numberReceiverFacade = mock(NumberReceiverFacade.class);
         Mockito.when(numberReceiverFacade.retrieveNumbersFromUser(any())).thenReturn(List.of(
                 new LotteryTicketDto("TID001", List.of(24, 5, 32, 72, 53, 91), LocalDateTime.now(),
@@ -80,7 +87,7 @@ public class ResultCheckerFacadeTest {
         Mockito.when(numberGeneratorFacade.retrieveWonNumbers(LocalDateTime.of(2023, 2, 4, 20, 0)))
                 .thenReturn(new DrawnNumbersDto("DRW001", LocalDateTime.of(2023, 2, 4, 20, 0),
                         List.of(2, 16, 56, 42, 12, 92)));
-        ResultCheckerFacade resultCheckerFacade = new ResultCheckerFacade(numberGeneratorFacade, numberReceiverFacade, repository);
+        ResultCheckerFacade resultCheckerFacade = new ResultCheckerFacade(numberGeneratorFacade, numberReceiverFacade, repository,clock);
         //when
         resultCheckerFacade.transformToResult();
         //then
@@ -92,6 +99,8 @@ public class ResultCheckerFacadeTest {
     @Test
     public void should_update_three_result_to_include_winning_numbers() {
         //given
+        LocalDateTime now = LocalDateTime.of(2023, 2, 3, 20, 0);
+        AdjustableClock clock = new AdjustableClock(now.toInstant(ZoneOffset.UTC), ZoneId.of("Europe/Warsaw"));
         NumberReceiverFacade numberReceiverFacade = mock(NumberReceiverFacade.class);
         Mockito.when(numberReceiverFacade.retrieveNumbersFromUser(any())).thenReturn(List.of(
                 new LotteryTicketDto("TID001", List.of(24, 5, 32, 72, 53, 91), LocalDateTime.now(),
@@ -114,7 +123,7 @@ public class ResultCheckerFacadeTest {
         Mockito.when(numberGeneratorFacade.retrieveWonNumbers(LocalDateTime.of(2023, 1, 28, 20, 0)))
                 .thenReturn(new DrawnNumbersDto("DRW001", LocalDateTime.of(2023, 1, 28, 20, 0),
                         List.of(2, 16, 56, 42, 12, 92)));
-        ResultCheckerFacade resultCheckerFacade = new ResultCheckerFacade(numberGeneratorFacade, numberReceiverFacade, repository);
+        ResultCheckerFacade resultCheckerFacade = new ResultCheckerFacade(numberGeneratorFacade, numberReceiverFacade, repository,clock);
         resultCheckerFacade.transformToResult();
         //when
         resultCheckerFacade.checkNumbers();
@@ -127,6 +136,8 @@ public class ResultCheckerFacadeTest {
     @Test
     public void should_return_result_with_updated_winning_numbers() {
         //given
+        LocalDateTime now = LocalDateTime.of(2023, 2, 3, 20, 0);
+        AdjustableClock clock = new AdjustableClock(now.toInstant(ZoneOffset.UTC), ZoneId.of("Europe/Warsaw"));
         NumberReceiverFacade numberReceiverFacade = mock(NumberReceiverFacade.class);
         Mockito.when(numberReceiverFacade.retrieveNumbersFromUser(any())).thenReturn(List.of(
                 new LotteryTicketDto("TID001", List.of(24, 5, 32, 72, 53, 91),
@@ -152,7 +163,7 @@ public class ResultCheckerFacadeTest {
         Mockito.when(numberGeneratorFacade.retrieveWonNumbers(LocalDateTime.of(2023, 1, 28, 20, 0)))
                 .thenReturn(new DrawnNumbersDto("DRW001", LocalDateTime.of(2023, 1, 28, 20, 0),
                         List.of(5, 22, 56, 42, 12, 92)));
-        ResultCheckerFacade resultCheckerFacade = new ResultCheckerFacade(numberGeneratorFacade, numberReceiverFacade, repository);
+        ResultCheckerFacade resultCheckerFacade = new ResultCheckerFacade(numberGeneratorFacade, numberReceiverFacade, repository,clock);
         //when
         resultCheckerFacade.transformToResult();
         resultCheckerFacade.checkNumbers();
@@ -167,6 +178,8 @@ public class ResultCheckerFacadeTest {
     @Test
     public void should_return_result_without_updated_winning_numbers() {
         //given
+        LocalDateTime now = LocalDateTime.of(2023, 2, 3, 20, 0);
+        AdjustableClock clock = new AdjustableClock(now.toInstant(ZoneOffset.UTC), ZoneId.of("Europe/Warsaw"));
         NumberReceiverFacade numberReceiverFacade = mock(NumberReceiverFacade.class);
         Mockito.when(numberReceiverFacade.retrieveNumbersFromUser(any())).thenReturn(List.of(
                 new LotteryTicketDto("TID001", List.of(24, 5, 32, 72, 53, 91), LocalDateTime.of(2023, 1, 27, 13, 0),
@@ -189,7 +202,7 @@ public class ResultCheckerFacadeTest {
         Mockito.when(numberGeneratorFacade.retrieveWonNumbers(LocalDateTime.of(2023, 1, 28, 20, 0)))
                 .thenReturn(new DrawnNumbersDto("DRW001", LocalDateTime.of(2023, 1, 28, 20, 0),
                         List.of(5, 22, 56, 42, 12, 92)));
-        ResultCheckerFacade resultCheckerFacade = new ResultCheckerFacade(numberGeneratorFacade, numberReceiverFacade, repository);
+        ResultCheckerFacade resultCheckerFacade = new ResultCheckerFacade(numberGeneratorFacade, numberReceiverFacade, repository,clock);
         //when
         resultCheckerFacade.transformToResult();
         resultCheckerFacade.checkNumbers();
@@ -204,6 +217,8 @@ public class ResultCheckerFacadeTest {
     @Test
     public void should_return_error_result() {
         //given
+        LocalDateTime now = LocalDateTime.of(2023, 2, 3, 20, 0);
+        AdjustableClock clock = new AdjustableClock(now.toInstant(ZoneOffset.UTC), ZoneId.of("Europe/Warsaw"));
         NumberReceiverFacade numberReceiverFacade = mock(NumberReceiverFacade.class);
         Mockito.when(numberReceiverFacade.retrieveNumbersFromUser(any())).thenReturn(List.of(
                 new LotteryTicketDto("TID001", List.of(24, 5, 32, 72, 53, 91), LocalDateTime.of(2023, 1, 27, 13, 0),
@@ -212,7 +227,7 @@ public class ResultCheckerFacadeTest {
         Mockito.when(numberGeneratorFacade.retrieveWonNumbers(LocalDateTime.of(2023, 1, 28, 20, 0)))
                 .thenReturn(new DrawnNumbersDto("DRW001", LocalDateTime.of(2023, 1, 28, 20, 0),
                         List.of(5, 22, 56, 42, 12, 92)));
-        ResultCheckerFacade resultCheckerFacade = new ResultCheckerFacade(numberGeneratorFacade, numberReceiverFacade, repository);
+        ResultCheckerFacade resultCheckerFacade = new ResultCheckerFacade(numberGeneratorFacade, numberReceiverFacade, repository,clock);
         //when
         resultCheckerFacade.transformToResult();
         resultCheckerFacade.checkNumbers();

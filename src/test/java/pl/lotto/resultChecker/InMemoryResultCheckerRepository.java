@@ -21,13 +21,12 @@ public class InMemoryResultCheckerRepository implements ResultCheckerRepository 
     }
 
     @Override
-    public List<Result> saveAll(List<Result> results) {
+    public void saveAll(List<Result> results) {
         Map<String,Result> temporaryResultMap = new HashMap<>();
         for (Result result: results) {
             temporaryResultMap.put(result.ticketID(), result);
         }
         resultDb.putAll(temporaryResultMap);
-        return results;
     }
 
     @Override

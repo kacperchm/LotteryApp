@@ -4,6 +4,7 @@ import org.springframework.stereotype.Component;
 import pl.lotto.numberGenerator.dto.DrawnNumbersDto;
 import pl.lotto.numberReceiver.dto.LotteryTicketDto;
 
+import java.time.Clock;
 import java.time.DayOfWeek;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -17,15 +18,16 @@ public class NumberGeneratorFacade {
     static ArrayList<LotteryTicketDto> drawsArchive = new ArrayList<>();
     private NumberGenerator numberGenerator;
     private NumberGeneratorRepository repository;
-    private LocalDateTime now;
+
+    private Clock clock;
 
     private Finder finder;
 
 
-    public NumberGeneratorFacade(NumberGenerator numberGenerator, NumberGeneratorRepository repository, LocalDateTime now) {
+    public NumberGeneratorFacade(NumberGenerator numberGenerator, NumberGeneratorRepository repository, Clock clock) {
         this.numberGenerator = numberGenerator;
         this.repository = repository;
-        this.now = now;
+        this.clock = clock;
         this.finder = new Finder();
 
     }
@@ -34,7 +36,7 @@ public class NumberGeneratorFacade {
 
     DrawnNumbersDto generateWonNumbers() {
 
-        LocalDateTime drawDate = finder.findFirstSaturday(now);
+        LocalDateTime drawDate = finder.findFirstSaturday(LocalDateTime.now(clock));
 
         List<Integer> drawNumbers = numberGenerator.generateNumber();
         DrawnNumbers savedDrawnNumbers = repository.save(new DrawnNumbers(UUID.randomUUID().toString(), drawDate, drawNumbers));

@@ -6,6 +6,7 @@ import pl.lotto.numberGenerator.dto.DrawnNumbersDto;
 import pl.lotto.numberReceiver.NumberReceiverFacade;
 import pl.lotto.resultChecker.dto.ResultDto;
 
+import java.time.Clock;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -21,10 +22,11 @@ public class ResultCheckerFacade {
     private LotteryTicketMapper mapper;
     private MatchingNumbers matchingNumbers;
     private ResultsUpdater resultsUpdater;
+    private Clock clock;
 
 
     public ResultCheckerFacade(NumberGeneratorFacade numberGeneratorFacade, NumberReceiverFacade numberReceiverFacade,
-                               ResultCheckerRepository repository) {
+                               ResultCheckerRepository repository, Clock clock) {
         this.numberGeneratorFacade = numberGeneratorFacade;
         this.numberReceiverFacade = numberReceiverFacade;
         this.repository = repository;
@@ -33,10 +35,11 @@ public class ResultCheckerFacade {
         this.mapper = new LotteryTicketMapper();
         this.matchingNumbers = new MatchingNumbers();
         this.resultsUpdater = new ResultsUpdater();
+        this.clock = clock;
     }
 
     void transformToResult() {
-        LocalDateTime now = finder.findFirstSaturday(LocalDateTime.now());
+        LocalDateTime now = finder.findFirstSaturday(LocalDateTime.now(clock));
         List<Result> resultsWithoutDrawnNumbers = mapper.mapToResults(numberReceiverFacade.retrieveNumbersFromUser(now));
         List<Result> resultsFromRepository = repository.findAllByDrawDate(now);
         List<Result> resultsToSave =
@@ -47,7 +50,7 @@ public class ResultCheckerFacade {
     }
 
     void checkNumbers() {
-        LocalDateTime now = finder.findLastSaturday(LocalDateTime.now());
+        LocalDateTime now = finder.findLastSaturday(LocalDateTime.now(clock));
         List<Result> resultsToUpdate = repository.findAllByDrawDate(now);
         DrawnNumbersDto drawnNumbersDto = numberGeneratorFacade.retrieveWonNumbers(now);
         List<Result> results = resultsUpdater.update(drawnNumbersDto, resultsToUpdate);

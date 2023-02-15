@@ -11,7 +11,7 @@ public interface ResultCheckerRepository extends MongoRepository<Result, String>
 //    Result save(Result result);
 //    List<Result> saveAll(List<Result> results);
 
-    List<Result> saveAll(List<Result> results);
+    void saveAll(List<Result> results);
 
     List<Result> findAllByDrawDate(LocalDateTime drawDate);
 

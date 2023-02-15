@@ -4,7 +4,7 @@ import org.springframework.stereotype.Component;
 import pl.lotto.resultChecker.ResultCheckerFacade;
 
 import static pl.lotto.resultAnnouncer.LotteryPrize.*;
-@Component
+
 public class ResultAnnouncerFacade {
 
     private ResultCheckerFacade resultCheckerFacade;
