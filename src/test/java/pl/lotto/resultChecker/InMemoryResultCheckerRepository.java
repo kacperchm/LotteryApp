@@ -1,18 +1,22 @@
 package pl.lotto.resultChecker;
 
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.function.Function;
+import java.util.stream.StreamSupport;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.repository.query.FluentQuery;
 
-import java.time.LocalDateTime;
-import java.util.*;
-import java.util.function.Function;
-
 public class InMemoryResultCheckerRepository implements ResultCheckerRepository {
 
-    public Map<String,Result> resultDb = new HashMap<>();
+    public Map<String, Result> resultDb = new HashMap<>();
 
     @Override
     public Result save(Result result) {
@@ -20,14 +24,14 @@ public class InMemoryResultCheckerRepository implements ResultCheckerRepository 
         return result;
     }
 
-    @Override
-    public void saveAll(List<Result> results) {
-        Map<String,Result> temporaryResultMap = new HashMap<>();
-        for (Result result: results) {
-            temporaryResultMap.put(result.ticketID(), result);
-        }
-        resultDb.putAll(temporaryResultMap);
-    }
+//    @Override
+//    public void saveAll(List<Result> results) {
+//        Map<String,Result> temporaryResultMap = new HashMap<>();
+//        for (Result result: results) {
+//            temporaryResultMap.put(result.ticketID(), result);
+//        }
+//        resultDb.putAll(temporaryResultMap);
+//    }
 
     @Override
     public List<Result> findAllByDrawDate(LocalDateTime drawDate) {
@@ -45,24 +49,38 @@ public class InMemoryResultCheckerRepository implements ResultCheckerRepository 
         return Optional.ofNullable(resultDb.get(id));
     }
 
-    @Override
-    public void delete(String ticketId) {
+//    @Override
+//    public void updateById(String id) {
+//
+//    }
+//
+//    @Override
+//    public void updateMulti(List<Result> resultList) {
+//
+//    }
+
+    public void remove(String ticketId) {
         resultDb.remove(ticketId);
     }
 
-    @Override
-    public void updateAll(List<Result> resultList) {
-        Map<String,Result> temporaryResultMap = new HashMap<>();
-        for (Result result : resultList) {
-            resultDb.remove(result.ticketID());
-            temporaryResultMap.put(result.ticketID(), result);
-        }
-        resultDb.putAll(temporaryResultMap);
-    }
+//    @Override
+//    public void updateAll(List<Result> resultList) {
+//        Map<String, Result> temporaryResultMap = new HashMap<>();
+//        for (Result result : resultList) {
+//            resultDb.remove(result.ticketID());
+//            temporaryResultMap.put(result.ticketID(), result);
+//        }
+//        resultDb.putAll(temporaryResultMap);
+//    }
 
     @Override
     public <S extends Result> List<S> saveAll(Iterable<S> entities) {
-        return null;
+        Map<String, S> temporaryResultMap = new HashMap<>();
+        for (S result : entities) {
+            temporaryResultMap.put(result.ticketID(), result);
+        }
+        resultDb.putAll(temporaryResultMap);
+        return StreamSupport.stream(entities.spliterator(), false).toList();
     }
 
     @Override
@@ -97,7 +115,7 @@ public class InMemoryResultCheckerRepository implements ResultCheckerRepository 
 
     @Override
     public void delete(Result entity) {
-
+        resultDb.remove(entity.ticketID());
     }
 
     @Override

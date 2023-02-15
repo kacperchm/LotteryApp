@@ -1,16 +1,17 @@
 package pl.lotto.resultChecker;
 
+import java.time.Clock;
+import java.time.LocalDateTime;
+import java.util.Collections;
+import java.util.List;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Component;
 import pl.lotto.numberGenerator.NumberGeneratorFacade;
 import pl.lotto.numberGenerator.dto.DrawnNumbersDto;
 import pl.lotto.numberReceiver.NumberReceiverFacade;
 import pl.lotto.resultChecker.dto.ResultDto;
-
-import java.time.Clock;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 
 @Component
 public class ResultCheckerFacade {
@@ -23,13 +24,15 @@ public class ResultCheckerFacade {
     private MatchingNumbers matchingNumbers;
     private ResultsUpdater resultsUpdater;
     private Clock clock;
+    private MongoTemplateable mongoTemplate;
 
 
     public ResultCheckerFacade(NumberGeneratorFacade numberGeneratorFacade, NumberReceiverFacade numberReceiverFacade,
-                               ResultCheckerRepository repository, Clock clock) {
+                               ResultCheckerRepository repository, Clock clock, MongoTemplateable mongoTemplate) {
         this.numberGeneratorFacade = numberGeneratorFacade;
         this.numberReceiverFacade = numberReceiverFacade;
         this.repository = repository;
+        this.mongoTemplate = mongoTemplate;
         this.finder = new Finder();
         this.comparator = new Comparator();
         this.mapper = new LotteryTicketMapper();
@@ -38,7 +41,7 @@ public class ResultCheckerFacade {
         this.clock = clock;
     }
 
-    void transformToResult() {
+    public void transformToResult() {
         LocalDateTime now = finder.findFirstSaturday(LocalDateTime.now(clock));
         List<Result> resultsWithoutDrawnNumbers = mapper.mapToResults(numberReceiverFacade.retrieveNumbersFromUser(now));
         List<Result> resultsFromRepository = repository.findAllByDrawDate(now);
@@ -49,12 +52,30 @@ public class ResultCheckerFacade {
         }
     }
 
+    public boolean wasNumberChecked() {
+        //
+        LocalDateTime now = finder.findFirstSaturday(LocalDateTime.now(clock));
+        return !repository.findAllByDrawDate(now).isEmpty();
+    }
+
     void checkNumbers() {
         LocalDateTime now = finder.findLastSaturday(LocalDateTime.now(clock));
         List<Result> resultsToUpdate = repository.findAllByDrawDate(now);
         DrawnNumbersDto drawnNumbersDto = numberGeneratorFacade.retrieveWonNumbers(now);
         List<Result> results = resultsUpdater.update(drawnNumbersDto, resultsToUpdate);
-        repository.updateAll(results);
+//        mongoTemplate.updateM
+
+        for (Result result1 : results) {
+            Query query = new Query().addCriteria(Criteria.where("ticketId").is(result1.ticketID()));
+            Update update = new Update();
+            update.set("playerNumbers", result1.playerNumbers());
+            update.set("creationTicketDate", result1.creationTicketDate());
+            update.set("drawDate", result1.drawDate());
+            update.set("winningNumbers", result1.winningNumbers());
+            update.set("correctNumbers", result1.correctNumbers());
+            update.set("message", result1.message());
+            mongoTemplate.upsert(query, update, Result.class);
+        }
     }
 
     public ResultDto checkWinner(String lotteryTicketID) {

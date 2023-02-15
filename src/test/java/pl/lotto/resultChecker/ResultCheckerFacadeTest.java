@@ -2,9 +2,9 @@ package pl.lotto.resultChecker;
 
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
+import org.springframework.data.mongodb.core.MongoTemplate;
 import pl.lotto.numberGenerator.NumberGeneratorFacade;
 import pl.lotto.numberGenerator.dto.DrawnNumbersDto;
-import pl.lotto.resultChecker.AdjustableClock;
 import pl.lotto.numberReceiver.NumberReceiverFacade;
 import pl.lotto.numberReceiver.dto.LotteryTicketDto;
 import pl.lotto.resultChecker.dto.ResultDto;
@@ -22,7 +22,8 @@ import static org.mockito.Mockito.verify;
 
 public class ResultCheckerFacadeTest {
 
-    ResultCheckerRepository repository = new InMemoryResultCheckerRepository();
+    InMemoryResultCheckerRepository repository = new InMemoryResultCheckerRepository();
+    private MongoTemplateable mongoTemplate = new InMemoryMongoTemplate(repository);
 
     @Test
     public void should_save_whole_list_of_results_without_winning_numbers_to_repository() {
@@ -51,7 +52,7 @@ public class ResultCheckerFacadeTest {
         Mockito.when(numberGeneratorFacade.retrieveWonNumbers(LocalDateTime.of(2023, 2, 4, 20, 0)))
                 .thenReturn(new DrawnNumbersDto("DRW001", LocalDateTime.of(2023, 2, 4, 20, 0),
                         List.of(2, 16, 56, 42, 12, 92)));
-        ResultCheckerFacade resultCheckerFacade = new ResultCheckerFacade(numberGeneratorFacade, numberReceiverFacade, repository,clock);
+        ResultCheckerFacade resultCheckerFacade = new ResultCheckerFacade(numberGeneratorFacade, numberReceiverFacade, repository,clock, mongoTemplate);
         //when
         resultCheckerFacade.transformToResult();
         //then
@@ -87,7 +88,7 @@ public class ResultCheckerFacadeTest {
         Mockito.when(numberGeneratorFacade.retrieveWonNumbers(LocalDateTime.of(2023, 2, 4, 20, 0)))
                 .thenReturn(new DrawnNumbersDto("DRW001", LocalDateTime.of(2023, 2, 4, 20, 0),
                         List.of(2, 16, 56, 42, 12, 92)));
-        ResultCheckerFacade resultCheckerFacade = new ResultCheckerFacade(numberGeneratorFacade, numberReceiverFacade, repository,clock);
+        ResultCheckerFacade resultCheckerFacade = new ResultCheckerFacade(numberGeneratorFacade, numberReceiverFacade, repository,clock, mongoTemplate);
         //when
         resultCheckerFacade.transformToResult();
         //then
@@ -123,7 +124,7 @@ public class ResultCheckerFacadeTest {
         Mockito.when(numberGeneratorFacade.retrieveWonNumbers(LocalDateTime.of(2023, 1, 28, 20, 0)))
                 .thenReturn(new DrawnNumbersDto("DRW001", LocalDateTime.of(2023, 1, 28, 20, 0),
                         List.of(2, 16, 56, 42, 12, 92)));
-        ResultCheckerFacade resultCheckerFacade = new ResultCheckerFacade(numberGeneratorFacade, numberReceiverFacade, repository,clock);
+        ResultCheckerFacade resultCheckerFacade = new ResultCheckerFacade(numberGeneratorFacade, numberReceiverFacade, repository,clock, mongoTemplate);
         resultCheckerFacade.transformToResult();
         //when
         resultCheckerFacade.checkNumbers();
@@ -163,7 +164,7 @@ public class ResultCheckerFacadeTest {
         Mockito.when(numberGeneratorFacade.retrieveWonNumbers(LocalDateTime.of(2023, 1, 28, 20, 0)))
                 .thenReturn(new DrawnNumbersDto("DRW001", LocalDateTime.of(2023, 1, 28, 20, 0),
                         List.of(5, 22, 56, 42, 12, 92)));
-        ResultCheckerFacade resultCheckerFacade = new ResultCheckerFacade(numberGeneratorFacade, numberReceiverFacade, repository,clock);
+        ResultCheckerFacade resultCheckerFacade = new ResultCheckerFacade(numberGeneratorFacade, numberReceiverFacade, repository,clock, mongoTemplate);
         //when
         resultCheckerFacade.transformToResult();
         resultCheckerFacade.checkNumbers();
@@ -202,7 +203,7 @@ public class ResultCheckerFacadeTest {
         Mockito.when(numberGeneratorFacade.retrieveWonNumbers(LocalDateTime.of(2023, 1, 28, 20, 0)))
                 .thenReturn(new DrawnNumbersDto("DRW001", LocalDateTime.of(2023, 1, 28, 20, 0),
                         List.of(5, 22, 56, 42, 12, 92)));
-        ResultCheckerFacade resultCheckerFacade = new ResultCheckerFacade(numberGeneratorFacade, numberReceiverFacade, repository,clock);
+        ResultCheckerFacade resultCheckerFacade = new ResultCheckerFacade(numberGeneratorFacade, numberReceiverFacade, repository,clock, mongoTemplate);
         //when
         resultCheckerFacade.transformToResult();
         resultCheckerFacade.checkNumbers();
@@ -227,7 +228,7 @@ public class ResultCheckerFacadeTest {
         Mockito.when(numberGeneratorFacade.retrieveWonNumbers(LocalDateTime.of(2023, 1, 28, 20, 0)))
                 .thenReturn(new DrawnNumbersDto("DRW001", LocalDateTime.of(2023, 1, 28, 20, 0),
                         List.of(5, 22, 56, 42, 12, 92)));
-        ResultCheckerFacade resultCheckerFacade = new ResultCheckerFacade(numberGeneratorFacade, numberReceiverFacade, repository,clock);
+        ResultCheckerFacade resultCheckerFacade = new ResultCheckerFacade(numberGeneratorFacade, numberReceiverFacade, repository,clock, mongoTemplate);
         //when
         resultCheckerFacade.transformToResult();
         resultCheckerFacade.checkNumbers();

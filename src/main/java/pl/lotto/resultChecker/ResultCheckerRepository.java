@@ -1,6 +1,9 @@
 package pl.lotto.resultChecker;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.repository.MongoRepository;
+import org.springframework.data.mongodb.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDateTime;
@@ -11,13 +14,13 @@ public interface ResultCheckerRepository extends MongoRepository<Result, String>
 //    Result save(Result result);
 //    List<Result> saveAll(List<Result> results);
 
-    void saveAll(List<Result> results);
+//    void saveAll(List<Result> results);
 
     List<Result> findAllByDrawDate(LocalDateTime drawDate);
 
     Optional<Result> findByTicketID(String id);
 
-    void delete(String ticketId);
+//    void delete(String ticketId);
 
-    void updateAll(List<Result> resultList);
+//    void updateById(String id);
 }
