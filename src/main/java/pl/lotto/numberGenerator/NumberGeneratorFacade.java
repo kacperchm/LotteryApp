@@ -34,7 +34,7 @@ public class NumberGeneratorFacade {
 
     //TODO: fix this method. Use scheduler (Spring)
 
-    DrawnNumbersDto generateWonNumbers() {
+    public DrawnNumbersDto generateWonNumbers() {
 
         LocalDateTime drawDate = finder.findFirstSaturday(LocalDateTime.now(clock));
 

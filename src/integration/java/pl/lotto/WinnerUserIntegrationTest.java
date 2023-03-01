@@ -76,7 +76,7 @@ class WinnerUserIntegrationTest {
         // GET /results/asdasd-2qweqw-asda-123123
 
         // then
-        MvcResult mvcResultGetMethod = performGetMethod.andExpect(status().isNoContent()).andReturn();
+        MvcResult mvcResultGetMethod = performGetMethod.andExpect(status().isOk()).andReturn();
 
         String jsonGetMethod = mvcResultGetMethod.getResponse().getContentAsString();
         ResultAnnouncerResponseDto finalResult = objectMapper.readValue(jsonGetMethod, ResultAnnouncerResponseDto.class);

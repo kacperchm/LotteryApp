@@ -8,13 +8,17 @@ import pl.lotto.resultChecker.ResultCheckerFacade;
 
 @Component
 @AllArgsConstructor
-public class ResultCheckerSchdeuler {
+public class ResultCheckerScheduler {
 
     private final ResultCheckerFacade resultCheckerFacade;
 
-    @Scheduled(cron = "*/1 * * * * *")
-    public void f() {
-        System.out.println("scheduler result checker started");
-//        resultCheckerFacade.transformToResult();
+    @Scheduled(cron = "* */1 * * * *")
+    public void f1() {
+        resultCheckerFacade.transformToResult();
+    }
+
+    @Scheduled(cron = "1 20 * * Sat ?")
+    public void f2() {
+        resultCheckerFacade.checkNumbers();
     }
 }

@@ -1,9 +1,6 @@
 package pl.lotto.resultChecker;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.repository.MongoRepository;
-import org.springframework.data.mongodb.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDateTime;
@@ -22,5 +19,5 @@ public interface ResultCheckerRepository extends MongoRepository<Result, String>
 
 //    void delete(String ticketId);
 
-//    void updateById(String id);
+//    void updateAll(List<Result> resultList);
 }

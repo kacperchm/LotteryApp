@@ -8,8 +8,8 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 @SpringBootApplication
 @EnableMongoRepositories
 @EnableScheduling
-public class LottoApplcation {
+public class LottoApplication {
         public static void main(String[] args) {
-            SpringApplication.run(LottoApplcation.class, args);
+            SpringApplication.run(LottoApplication.class, args);
         }
 }

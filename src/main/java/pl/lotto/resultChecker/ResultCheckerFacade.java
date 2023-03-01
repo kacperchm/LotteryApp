@@ -58,12 +58,11 @@ public class ResultCheckerFacade {
         return !repository.findAllByDrawDate(now).isEmpty();
     }
 
-    void checkNumbers() {
+    public void checkNumbers() {
         LocalDateTime now = finder.findLastSaturday(LocalDateTime.now(clock));
         List<Result> resultsToUpdate = repository.findAllByDrawDate(now);
         DrawnNumbersDto drawnNumbersDto = numberGeneratorFacade.retrieveWonNumbers(now);
         List<Result> results = resultsUpdater.update(drawnNumbersDto, resultsToUpdate);
-//        mongoTemplate.updateM
 
         for (Result result1 : results) {
             Query query = new Query().addCriteria(Criteria.where("ticketId").is(result1.ticketID()));
