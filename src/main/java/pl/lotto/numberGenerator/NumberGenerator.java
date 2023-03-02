@@ -1,9 +1,8 @@
 package pl.lotto.numberGenerator;
 
-import org.springframework.stereotype.Component;
-
 import java.util.ArrayList;
 import java.util.List;
+import org.springframework.stereotype.Component;
 
 @Component
 class NumberGenerator {
@@ -11,7 +10,6 @@ class NumberGenerator {
     List<Integer> generateNumber() {
         return drawingMachine();
     }
-
 
     List<Integer> drawingMachine() {
         List<Integer> drawnNumbers = new ArrayList<>();

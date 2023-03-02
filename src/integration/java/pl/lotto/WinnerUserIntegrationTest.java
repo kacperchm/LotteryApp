@@ -132,7 +132,8 @@ class WinnerUserIntegrationTest {
         MvcResult mvcResultGetMethod2 = performGetMethod2.andExpect(status().isOk()).andReturn();
         String jsonGetMethod2 = mvcResultGetMethod2.getResponse().getContentAsString();
         ResultAnnouncerResponseDto finalResult2 = objectMapper.readValue(jsonGetMethod2, ResultAnnouncerResponseDto.class);
-        assertThat(finalResult2.message()).isEqualTo("The numbers have not been drawn yet");
+        assertThat(finalResult2.message()).isEqualTo("Your lottery ticket " + ticketHash + " from "
+                + result.creationTime() + " has " + "0" + " correct numbers.");
 
     }
 
