@@ -1,4 +1,4 @@
-package pl.lotto.numberGenerator;
+package pl.lotto;
 
 import java.time.*;
 
@@ -86,5 +86,14 @@ public class AdjustableClock extends Clock {
                 time.getHour(), time.getMinute(), time.getSecond(), time.getNano(), zone);
     }
 
+    public void plusHours(int hours) {
+        Duration offset = Duration.ofHours(hours);
+        advanceInTimeBy(offset);
+    }
+
+    public void plusMinutes(int minutes) {
+        Duration offset = Duration.ofMinutes(minutes);
+        advanceInTimeBy(offset);
+    }
 }
 

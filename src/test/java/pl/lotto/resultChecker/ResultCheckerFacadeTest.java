@@ -2,7 +2,7 @@ package pl.lotto.resultChecker;
 
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
-import org.springframework.data.mongodb.core.MongoTemplate;
+import pl.lotto.AdjustableClock;
 import pl.lotto.numberGenerator.NumberGeneratorFacade;
 import pl.lotto.numberGenerator.dto.DrawnNumbersDto;
 import pl.lotto.numberReceiver.NumberReceiverFacade;

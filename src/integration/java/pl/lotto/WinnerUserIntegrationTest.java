@@ -8,9 +8,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.DynamicPropertyRegistry;
+import org.springframework.test.context.DynamicPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.ResultActions;
+import org.testcontainers.containers.MongoDBContainer;
+import org.testcontainers.junit.jupiter.Container;
+import org.testcontainers.junit.jupiter.Testcontainers;
+import org.testcontainers.utility.DockerImageName;
+import pl.lotto.numberGenerator.DrawNumberNotFoundException;
+import pl.lotto.numberGenerator.NumberGeneratorFacade;
 import pl.lotto.numberReceiver.dto.InputNumbersResultDto;
 import pl.lotto.resultAnnouncer.ResultAnnouncerResponseDto;
 import pl.lotto.resultChecker.ResultCheckerFacade;
@@ -22,8 +31,10 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@SpringBootTest(classes = IntegrationConfiguration.class)
+@SpringBootTest(classes = {LottoApplication.class, IntegrationConfiguration.class})
 @AutoConfigureMockMvc
+@Testcontainers
+@ActiveProfiles("integration")
 class WinnerUserIntegrationTest {
 
     @Autowired
@@ -35,9 +46,23 @@ class WinnerUserIntegrationTest {
     @Autowired
     ResultCheckerFacade resultCheckerFacade;
 
+    @Autowired
+    AdjustableClock adjustableClock;
+
+    @Autowired
+    NumberGeneratorFacade numberGeneratorFacade;
+
+    @Container
+    public static final MongoDBContainer mongoDBContainer = new MongoDBContainer(DockerImageName.parse("mongo:4.0.10"));
+
+    @DynamicPropertySource
+    public static void propertyOverride(DynamicPropertyRegistry registry) {
+        registry.add("spring.data.mongodb.uri", mongoDBContainer::getReplicaSetUrl);
+    }
+
     @Test
     void winnerUserScenario() throws Exception {
-        //step 1: user gave 6 numbers at 02.02.2023 12:00 on endpoint and system returned lottery ticket with draw date 04.02.2023 20:00
+        //step 1: user gave 6 numbers at 09.02.2023 08:00 on endpoint and system returned lottery ticket with draw date 11.02.2023 20:00
 
         // given
         // when
@@ -65,31 +90,50 @@ class WinnerUserIntegrationTest {
                 .pollInterval(Duration.ofSeconds(1))
                 .until(() -> resultCheckerFacade.wasNumberChecked());
 
-        //step 2: user checked result before draw date and system return early message
 
+        //step 2: user checked result before draw date and system return early message GET /results/asdasd-2qweqw-asda-123123
         // given
         String ticketHash = result.lotteryId();
-
         // when
         ResultActions performGetMethod = mockMvc.perform(get("/results/" + ticketHash));
-
-        // GET /results/asdasd-2qweqw-asda-123123
-
         // then
         MvcResult mvcResultGetMethod = performGetMethod.andExpect(status().isOk()).andReturn();
-
         String jsonGetMethod = mvcResultGetMethod.getResponse().getContentAsString();
         ResultAnnouncerResponseDto finalResult = objectMapper.readValue(jsonGetMethod, ResultAnnouncerResponseDto.class);
-
         assertThat(finalResult.message()).isEqualTo("The numbers have not been drawn yet");
 
-        //step 3: 2 days and 7 hours passed (04.02.2023 19:00)
-        //step 4: system generated winning numbers for date 04.02.2023 20:00
-        //step 5: 1 hour and minute passed (04.02.2023 20:01)
-        //step 6: system checked result 04.02.2023 20:01
-        //step 7: user checked result and system return winner message
+        //step 3: 2 days and 12 hours passed (11.02.2023 20:00)
+        adjustableClock.plusDays(2);
+        adjustableClock.plusHours(12);
 
-        //TODO:Read about @RestController, MockMvc, @RequestBody, HttpStatus
+        //step 4: system generated winning numbers for date 04.02.2023 20:00
+        await().atMost(20, SECONDS)
+                .pollInterval(Duration.ofSeconds(1))
+                .until(() ->
+                        {
+                            try {
+                                return numberGeneratorFacade.retrieveWonNumbers(ticketDrawDate).drawId() != null;
+                            } catch (DrawNumberNotFoundException e) {
+                                return false;
+                            }
+                        }
+                );
+
+
+        //step 5: 1 minute passed (11.02.2023 20:01)
+        adjustableClock.plusMinutes(1);
+
+
+        //step 6: user checked result and system return winner message
+        // given
+        // when
+        ResultActions performGetMethod2 = mockMvc.perform(get("/results/" + ticketHash));
+        // then
+        MvcResult mvcResultGetMethod2 = performGetMethod2.andExpect(status().isOk()).andReturn();
+        String jsonGetMethod2 = mvcResultGetMethod2.getResponse().getContentAsString();
+        ResultAnnouncerResponseDto finalResult2 = objectMapper.readValue(jsonGetMethod2, ResultAnnouncerResponseDto.class);
+        assertThat(finalResult2.message()).isEqualTo("The numbers have not been drawn yet");
+
     }
 
 }

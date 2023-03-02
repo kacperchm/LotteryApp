@@ -4,10 +4,10 @@ import org.junit.jupiter.api.Test;
 import pl.lotto.numberGenerator.dto.DrawnNumbersDto;
 
 
-import java.time.Clock;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZoneOffset;
+import pl.lotto.AdjustableClock;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

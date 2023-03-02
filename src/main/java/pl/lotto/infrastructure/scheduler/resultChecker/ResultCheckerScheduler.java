@@ -12,12 +12,12 @@ public class ResultCheckerScheduler {
 
     private final ResultCheckerFacade resultCheckerFacade;
 
-    @Scheduled(cron = "* */1 * * * *")
+    @Scheduled(cron = "${lotto.result-checker.transformToResultOccurrence}")
     public void f1() {
         resultCheckerFacade.transformToResult();
     }
 
-    @Scheduled(cron = "1 20 * * Sat ?")
+    @Scheduled(cron = "${lotto.result-checker.checkNumbersOccurrence}")
     public void f2() {
         resultCheckerFacade.checkNumbers();
     }
