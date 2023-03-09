@@ -12,4 +12,6 @@ public interface NumberGeneratorRepository extends MongoRepository<DrawnNumbers,
 //        DrawnNumbers save(DrawnNumbers drawnNumbers);
 
         Optional<DrawnNumbers> findDrawnNumbersByDrawDate(LocalDateTime drawDate);
+
+    boolean existsByDrawDate(LocalDateTime drawDate);
 }

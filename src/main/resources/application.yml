@@ -7,7 +7,7 @@ spring:
 
 lotto:
   number-generator:
-    lotteryRunOccurrence: "0 20 * * 6 ?"
+    lotteryRunOccurrence: "59 19 * * 6 ?"
   result-checker:
     transformToResultOccurrence: "* */1 * * * *"
     checkNumbersOccurrence: "1 20 * * 6 ?"

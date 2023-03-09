@@ -102,11 +102,12 @@ class WinnerUserIntegrationTest {
         ResultAnnouncerResponseDto finalResult = objectMapper.readValue(jsonGetMethod, ResultAnnouncerResponseDto.class);
         assertThat(finalResult.message()).isEqualTo("The numbers have not been drawn yet");
 
-        //step 3: 2 days and 12 hours passed (11.02.2023 20:00)
+        //step 3: 2 days and 11 hours, 59 minutes passed (11.02.2023 19:59)
         adjustableClock.plusDays(2);
-        adjustableClock.plusHours(12);
+        adjustableClock.plusHours(11);
+        adjustableClock.plusMinutes(59);
 
-        //step 4: system generated winning numbers for date 04.02.2023 20:00
+        //step 4: system generated winning numbers for date 11.02.2023 20:00
         await().atMost(20, SECONDS)
                 .pollInterval(Duration.ofSeconds(1))
                 .until(() ->
@@ -120,11 +121,17 @@ class WinnerUserIntegrationTest {
                 );
 
 
-        //step 5: 1 minute passed (11.02.2023 20:01)
-        adjustableClock.plusMinutes(1);
+//        //step 5: 2 minutes passed (11.02.2023 20:01)
+//        adjustableClock.plusMinutes(2);
 
 
-        //step 6: user checked result and system return winner message
+        // step 6: system generated results for user
+        await().atMost(20, SECONDS)
+                .pollInterval(Duration.ofSeconds(1))
+                .until(() -> !resultCheckerFacade.checkWinner(ticketHash).winningNumbers().isEmpty());
+
+
+        //step 7: user checked result and system return winner message
         // given
         // when
         ResultActions performGetMethod2 = mockMvc.perform(get("/results/" + ticketHash));

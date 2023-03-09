@@ -1,17 +1,16 @@
 package pl.lotto.numberGenerator;
 
-import org.springframework.data.domain.Example;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
-import org.springframework.data.repository.query.FluentQuery;
-
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
+import org.springframework.data.domain.Example;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.repository.query.FluentQuery;
 
 public class InMemoryNumberGeneratorRepository implements NumberGeneratorRepository {
 
@@ -25,9 +24,15 @@ public class InMemoryNumberGeneratorRepository implements NumberGeneratorReposit
 
     @Override
     public Optional<DrawnNumbers> findDrawnNumbersByDrawDate(LocalDateTime drawDate) {
-            return Optional.of(drawnNumbersDB.stream()
-                    .filter(drawnNumbers -> drawnNumbers.drawDate().equals(drawDate))
-                    .findFirst().orElse( new DrawnNumbers(null,null, Collections.emptyList())));
+        return Optional.of(drawnNumbersDB.stream()
+                .filter(drawnNumbers -> drawnNumbers.drawDate().equals(drawDate))
+                .findFirst().orElse(new DrawnNumbers(null, null, Collections.emptyList())));
+    }
+
+    @Override
+    public boolean existsByDrawDate(LocalDateTime drawDate) {
+        return drawnNumbersDB.stream()
+                .anyMatch(drawnNumbers -> drawnNumbers.drawDate().equals(drawDate));
     }
 
     @Override

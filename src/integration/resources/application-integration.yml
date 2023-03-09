@@ -1,6 +1,6 @@
 lotto:
   number-generator:
-    lotteryRunOccurrence: "*/5 * * * * *"
+    lotteryRunOccurrence: "*/1 * * * * *"
   result-checker:
     transformToResultOccurrence: "*/1 * * * * *"
-    checkNumbersOccurrence: "*/9 * * * * *"
+    checkNumbersOccurrence: "*/1 * * * * *"
