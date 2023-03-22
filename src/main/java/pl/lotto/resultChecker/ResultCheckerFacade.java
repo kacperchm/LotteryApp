@@ -66,7 +66,7 @@ public class ResultCheckerFacade {
     }
 
     public void checkNumbers() {
-        LocalDateTime now = finder.nextDrawDate(LocalDateTime.now(clock));
+        LocalDateTime now = finder.findLastSaturday(LocalDateTime.now(clock));
         List<Result> resultsToUpdate = repository.findAllByDrawDateAndMessage(now, "The numbers have not been drawn yet");
         log.info("results to update: " + resultsToUpdate.toString());
         DrawnNumbersDto drawnNumbersDto = numberGeneratorFacade.retrieveWonNumbers(now);
