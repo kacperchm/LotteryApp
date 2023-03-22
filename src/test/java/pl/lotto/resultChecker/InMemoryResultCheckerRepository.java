@@ -43,6 +43,16 @@ public class InMemoryResultCheckerRepository implements ResultCheckerRepository 
         return resultListWithCorrectDrawDate;
     }
 
+    @Override
+    public List<Result> findAllByDrawDateAndMessage(LocalDateTime drawDate, String message) {
+        List<Result> resultsDbList = new ArrayList<>();
+        resultDb.forEach((s, result) -> resultsDbList.add(result));
+        List<Result> resultListWithCorrectDrawDate = resultsDbList.stream()
+                .filter(result -> result.drawDate().equals(drawDate))
+                .filter(result -> result.message().startsWith(message))
+                .toList();
+        return resultListWithCorrectDrawDate;
+    }
 
     @Override
     public Optional<Result> findByTicketID(String id) {

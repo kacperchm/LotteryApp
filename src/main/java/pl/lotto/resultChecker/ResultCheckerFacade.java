@@ -57,7 +57,6 @@ public class ResultCheckerFacade {
             log.info("runned time: " + counter.getAndIncrement());
             repository.saveAll(resultsWithoutDrawnNumbers);
             log.info("how many results saved " + resultsWithoutDrawnNumbers.size());
-
         }
     }
 
@@ -68,13 +67,14 @@ public class ResultCheckerFacade {
 
     public void checkNumbers() {
         LocalDateTime now = finder.nextDrawDate(LocalDateTime.now(clock));
-        List<Result> resultsToUpdate = repository.findAllByDrawDate(now);
+        List<Result> resultsToUpdate = repository.findAllByDrawDateAndMessage(now, "The numbers have not been drawn yet");
+        log.info("results to update: " + resultsToUpdate.toString());
         DrawnNumbersDto drawnNumbersDto = numberGeneratorFacade.retrieveWonNumbers(now);
         List<Result> results = resultsUpdater.update(drawnNumbersDto, resultsToUpdate);
 
         for (Result result1 : results) {
             log.info("started updating results for ticketId " + result1.ticketID());
-            Query query = new Query().addCriteria(Criteria.where("id").is(result1.ticketID()));
+            Query query = new Query().addCriteria(Criteria.where("ticketID").is(result1.ticketID()));
             Update update = new Update();
             update.set("playerNumbers", result1.playerNumbers());
             update.set("creationTicketDate", result1.creationTicketDate());
@@ -89,11 +89,19 @@ public class ResultCheckerFacade {
     }
 
     public ResultDto checkWinner(String lotteryTicketID) {
+        log.info("checking winner");
         Result result = repository.findByTicketID(lotteryTicketID)
-                .orElse(new Result(null, Collections.emptyList(), null, null, Collections.emptyList(),
-                        0, "Lottery ticket does not exist."));
-        ResultDto resultDto = ResultMapper.mapToResultDto(result);
-        return resultDto;
+                .orElseThrow(() -> new RuntimeException("lotteryTicket: " + lotteryTicketID + " not found"));
+        LocalDateTime now = LocalDateTime.now(clock);
+        if (now.isBefore(result.drawDate())) {
+            log.info("Its to early message");
+            log.info("It is: " + now);
+            log.info("And draw date is: " + result.drawDate());
+            return ResultMapper.mapToResultDto(new Result(null, Collections.emptyList(), null, null, Collections.emptyList(),
+                    0, "The numbers have not been drawn yet"));
+        }
+        log.info("correctly returned result dto for id:" + result.ticketID());
+        return ResultMapper.mapToResultDto(result);
     }
 
 }

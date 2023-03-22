@@ -3,6 +3,7 @@ spring:
     allow-bean-definition-overriding: true
   data:
     mongodb:
+      auto-index-creation: true
       uri: mongodb://admin:admin@localhost:27017/lotto-web
 
 lotto:

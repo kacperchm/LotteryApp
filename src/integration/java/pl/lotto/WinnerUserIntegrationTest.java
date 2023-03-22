@@ -136,11 +136,13 @@ class WinnerUserIntegrationTest {
         // when
         ResultActions performGetMethod2 = mockMvc.perform(get("/results/" + ticketHash));
         // then
-        MvcResult mvcResultGetMethod2 = performGetMethod2.andExpect(status().isOk()).andReturn();
+        MvcResult mvcResultGetMethod2 = performGetMethod2
+                .andExpect(status().isOk())
+                .andReturn();
         String jsonGetMethod2 = mvcResultGetMethod2.getResponse().getContentAsString();
         ResultAnnouncerResponseDto finalResult2 = objectMapper.readValue(jsonGetMethod2, ResultAnnouncerResponseDto.class);
         assertThat(finalResult2.message()).isEqualTo("Your lottery ticket " + ticketHash + " from "
-                + result.creationTime() + " has " + "0" + " correct numbers.");
+                + result.creationTime() + " has " + "0" + " correct numbers. Your lottery prize is 0,00 zł");
 
     }
 
