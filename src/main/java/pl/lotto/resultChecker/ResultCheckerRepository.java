@@ -13,6 +13,7 @@ public interface ResultCheckerRepository extends MongoRepository<Result, String>
 
 //    void saveAll(List<Result> results);
 
+    List<Result> findAllByDrawDateAndMessage(LocalDateTime drawDate, String message);
     List<Result> findAllByDrawDate(LocalDateTime drawDate);
 
     Optional<Result> findByTicketID(String id);
